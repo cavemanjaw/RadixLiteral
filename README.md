@@ -5,6 +5,7 @@ RadixLiteral is header-only library implementing custom numeric system literal s
 For example usage run compile script with RadixLiteral argument:
 ```bash
 ./compile RadixLiteral
+```
 
 For use in client application - include the src/RadixLiteral.h header to your project and define the numeral system you want to use in your literals by defining following macro:
 ```c
