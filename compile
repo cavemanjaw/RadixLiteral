@@ -13,5 +13,5 @@
 # echo "$1" | sed -e 's/^.*\..*$/^.*$/g'
 
 outname=$(echo "$1" | sed -E 's/^(.*)\..*/\1/g')
-find test/ -name "$outname"* | xargs g++-9 -o $outname -std=c++2a
+find test/ -name "$outname*" | xargs g++-9 -o $outname -std=c++2a
 
