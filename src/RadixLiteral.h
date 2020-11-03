@@ -3,6 +3,12 @@
 #include<type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
 //#define _b(numeral_system)
 
+// To satisfy enable_if interface, could be anything and won't be used
+enum class enabler_t {};
+
+template<typename T>
+using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
+
 #define OPERATOR_LITERAL(numeral_system) \
 		template<char... chars> \
 		constexpr int operator"" _b##numeral_system() \
@@ -48,11 +54,15 @@ constexpr int bHelper() // No function to match in case of ambiguous call withou
    return (c - '0'); // TODO: Conversion from char to int is needed to give meaningful result? Or ASCII cares about it? Can this be instantiated with modified char template argment on the caller side?
 }
 
-template<unsigned base, char c, char... tail>
+//std::enable_if_t<std::is_integral<T>::value>* = nullptr
+template<unsigned base, char c, char... tail> //std::enable_if<(sizeof...(tail) > 0)>* = nullptr> // TODO: Analyze, template template argument?
 std::enable_if<(sizeof...(tail) > 0), int>::type // TODO: Will that return a constexpr qualified int 'constexpr int'?
 //constexpr int
 bHelper()
 {
+   // In later C++ standards:
+   // constexpr if (sizeof.. (tail)) > 0 call this function
+   // else call <unsigned, char> bHelper
    // TODO: Assert or other check
    return ((c - '0') * pow(base, sizeof...(tail))) + bHelper<base, tail...>(); // TODO: (c-'0') would get the actual int representation
 }
@@ -65,8 +75,8 @@ bHelper()
 //   return bHelper<chars...>();
 //}
 
-OPERATOR_LITERAL(3);
-OPERATOR_LITERAL(5);
+//OPERATOR_LITERAL(3);
+//OPERATOR_LITERAL(5);
 
 //#define OPERATOR_LITERAL(numeral_system) \
 //		template<char... chars> \
