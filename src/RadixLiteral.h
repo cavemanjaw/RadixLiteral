@@ -3,6 +3,10 @@
 #include<type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
 //#define _b(numeral_system)
 
+#define CHAR_TO_INT_NUMBER_OFFSET 48
+#define CHAR_TO_INT_LOWER_CASE_OFFSET 55
+#define CHAR_TO_INT_UPPER_CASE_OFFSET 87
+
 // To satisfy enable_if interface, could be anything and won't be used
 enum class enabler_t {};
 
@@ -10,11 +14,11 @@ template<typename T>
 using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
 
 #define OPERATOR_LITERAL(numeral_system) \
-		template<char... chars> \
-		constexpr int operator"" _b##numeral_system() \
-		{ \
-		   return bHelper<(numeral_system), chars...>(); \
-		}
+	template<char... chars> \
+	constexpr int operator"" _b##numeral_system() \
+	{ \
+	return bHelper<((numeral_system)), chars...>(); \
+	}
 
 // TODO: Macros for enabling specific features if compiled with different versions of C++ standard
 // TODO: Iterative version (can work for C++14 and beyond)
@@ -63,9 +67,13 @@ bHelper()
    // In later C++ standards:
    // constexpr if (sizeof.. (tail)) > 0 call this function
    // else call <unsigned, char> bHelper
-   // TODO: Assert or other check
-   return ((c - '0') * pow(base, sizeof...(tail))) + bHelper<base, tail...>(); // TODO: (c-'0') would get the actual int representation
-}
+   // TODO: Assert or other check // TODO: Make a macro or a function out of the common part of the expression
+   return c > '9' ?
+	    (c < 'Z' ?
+              (c - CHAR_TO_INT_UPPER_CASE_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>() :
+	      (c - CHAR_TO_INT_LOWER_CASE_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>()) :
+	  ((c - CHAR_TO_INT_NUMBER_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>()); // TODO: (c-'0') would get the actual int representation
+} //TODO: This would be called recursively - but no problem with char interpretation - lower base systems just won't have any letters
 
 // TODO: Generalize with a macro printing a proper version of this function and introduce additional
 //       template parameter substituted with the macro arg?
@@ -84,4 +92,11 @@ bHelper()
 //		{ \
 //		   return bHelper<chars..., (numeral_system)>(); \
 //		}
+
+// TODO: For tests of 15-base system
+template<char... chars>
+constexpr int operator"" _b15(const char*)
+{
+   return bHelper<(15), chars...>();
+}
 
