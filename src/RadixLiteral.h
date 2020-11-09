@@ -93,10 +93,33 @@ bHelper()
 //		   return bHelper<chars..., (numeral_system)>(); \
 //		}
 
-//// TODO: For tests of 15-base system
+// TODO: For tests of 15-base system
 //template<char... chars>
-//constexpr int operator"" _b15()
-//{
-//   return bHelper<(15), chars...>();
-//}
+
+constexpr int b15Helper(const char* arg)
+{
+	// Calculate the length of c-string
+	char* lengthIter_p = (char*)arg;
+	int cstringLenght = 0;
+	while (*lengthIter_p)
+	{
+		cstringLenght++;
+		lengthIter_p++;
+	}
+
+	char* charIter_p = (char*)arg;
+	int number = 0;
+	while(charIter_p)
+	{
+		number += ((int)(*arg - '0')) * pow(15, --cstringLenght);
+		charIter_p++;
+	}
+	return number;
+}
+
+// IMPORTANT: Is for case of "1A1"_b15;
+constexpr int operator"" _b15(const char* arg, std::size_t n)
+{
+	return b15Helper(arg);
+}
 

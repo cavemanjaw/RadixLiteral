@@ -7,6 +7,8 @@
 OPERATOR_LITERAL(3);
 OPERATOR_LITERAL(5);
 OPERATOR_LITERAL(2);
+
+// IMPORTANT: Is for the case of 111_b15;
 OPERATOR_LITERAL(15);
 
 //constexpr bool testBinary()
@@ -56,10 +58,28 @@ constexpr bool test15BaseOnlyDigits()
 {
    //constexpr
    int value = 111_b15;
-   //static_assert(value == 2626, "testBinary failed! BA1_b15 != 2626");
-   assert(("testBinary failed! 111_b15 != 2626", value == 241));
+   assert(("testBinary failed! 111_b15 != 241", value == 241));
    return true;
 }
+
+constexpr bool test15BaseDigitsAndLettersStartingDigits()
+{
+   //constexpr
+   int value = "1A1"_b15;
+   //static_assert(value == 2626, "testBinary failed! BA1_b15 != 2626");
+   assert(("testBinary failed! 1A1_b15 != 376", value == 376));
+   return true;
+}
+
+//constexpr bool test15BaseDigitsAndLettersStartingLetters()
+//{
+//   //constexpr
+//   int value = A11_b15;
+//   //static_assert(value == 2626, "testBinary failed! BA1_b15 != 2626");
+//   assert(("testBinary failed! 111_b15 != 2626", value == 241));
+//   return true;
+//}
+
 
 // TODO: Remove main and rely only on compile-time checks?
 int main()
