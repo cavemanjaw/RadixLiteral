@@ -93,10 +93,10 @@ bHelper()
 //		   return bHelper<chars..., (numeral_system)>(); \
 //		}
 
-// TODO: For tests of 15-base system
-template<char... chars>
-constexpr int operator"" _b15(const char*)
-{
-   return bHelper<(15), chars...>();
-}
+//// TODO: For tests of 15-base system
+//template<char... chars>
+//constexpr int operator"" _b15()
+//{
+//   return bHelper<(15), chars...>();
+//}
 
