@@ -13,6 +13,8 @@
 #ifdef DEBUG
 #endif
 
+#define NUM_OF_TESTS 6
+
 //OPERATOR_LITERAL(3);
 //OPERATOR_LITERAL(5);
 //OPERATOR_LITERAL(2);
@@ -33,6 +35,7 @@ OPERATOR_LITERAL(15);
 //   constexpr int value = 111_b2;
 //   static_assert(value == 7, "testBinary failed! 111_b != 7");
 //}
+
 
 constexpr bool testBinary()
 {
@@ -106,6 +109,28 @@ bool test15BaseDigitsAndLettersStartingDigits()
    return true;
 }
 
+static bool (*testFunction[NUM_OF_TESTS])() =
+{
+		&testBinary,
+		&testTernary,
+		&test15BaseLowerCase,
+		&test15BaseUpperCase,
+		&test15BaseOnlyDigits,
+		&test15BaseDigitsAndLettersStartingDigits
+};
+
+static_assert(NUM_OF_TESTS == sizeof(testFunction) / sizeof(testFunction[0]),
+			  "Number of tests is not equal to the test array size!");
+
+// TODO: Just a fun done with std::vector
+void runAllTests()
+{
+	for (std::size_t test = 0_z; test < NUM_OF_TESTS; test++)
+	{
+		(*testFunction[test]);
+	}
+}
+
 //constexpr bool test15BaseDigitsAndLettersStartingLetters()
 //{
 //   //constexpr
@@ -118,10 +143,12 @@ bool test15BaseDigitsAndLettersStartingDigits()
 //   return true;
 //}
 
-
 // TODO: Remove main and rely only on compile-time checks?
 int main()
 {
+	// Run the tests!
+	runAllTests();
+
 	//TODO: The number of defined functions should equal the number of calls down here
 
    //Run run-time tests
