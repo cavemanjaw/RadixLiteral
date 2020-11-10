@@ -19,9 +19,15 @@ enum class enabler_t {};
 template<typename T>
 using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
 
+// TODO: OPERATOR_LITERAL() that wraps OPERATOR_LITERAL10(15); and OPERATOR_LITERAL(15);
+// TODO: Then try to unify that solution into one macro
+
+#define OPERATOR_LITERAL(numeral_system) \
+	OPERATOR_LITERAL_internal(numeral_system); \
+	OPERATOR_LITERAL10_internal(numeral_system); \
 
 // TODO: If the token is more than 10-based then use the operator""(const char* arg, std::size_t n)
-#define OPERATOR_LITERAL(numeral_system) \
+#define OPERATOR_LITERAL_internal(numeral_system) \
 	template<char... chars> \
 	constexpr int operator"" _b##numeral_system() \
 	{ \
@@ -30,7 +36,7 @@ using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
 
 // TODO: The whole mechanism (macro-based) for literals containing letters
 // IMPORTANT: Is for case of "1A1"_b15;
-#define OPERATOR_LITERAL10(numeral_system) \
+#define OPERATOR_LITERAL10_internal(numeral_system) \
 		constexpr int operator"" _b##numeral_system(const char* arg, std::size_t) \
 		{ \
 		return bHelper(arg, (numeral_system)); \
