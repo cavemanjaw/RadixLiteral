@@ -8,10 +8,21 @@
 # does not work for some reason - which regex is used for that? any fault in the syntax or logic?
 # outname=${$1/^\.$/^$}
 # P_REP=${P/./_}
+# TODO: Pass the compiler flags
 
 # this is bad
 # echo "$1" | sed -e 's/^.*\..*$/^.*$/g'
 
-outname=$(echo "$1" | sed -E 's/^(.*)\..*/\1/g')
-find test/ -name "$outname*" | xargs g++-9 -o $outname -std=c++2a
+if [ -n "$1" ] && [ $1 != "-g" ]; then
+   outname=$(echo "$1" | sed -E 's/^(.*)\..*/\1/g')
+else
+   outname="RadixLiteral"
+fi
 
+if [[ "$*" == "-g" ]]; then
+   debug="-g"
+fi
+
+#if any of the flags is -g then append -g to the compile command
+
+find test/ -name "$outname*" | xargs g++-9 -o $outname $debug -std=c++2a
