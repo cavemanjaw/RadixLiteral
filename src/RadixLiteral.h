@@ -28,6 +28,14 @@ using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
 	return bHelper<((numeral_system)), chars...>(); \
 	}
 
+// TODO: The whole mechanism (macro-based) for literals containing letters
+// IMPORTANT: Is for case of "1A1"_b15;
+#define OPERATOR_LITERAL10(numeral_system) \
+		constexpr int operator"" _b##numeral_system(const char* arg, std::size_t) \
+		{ \
+		return bHelper(arg, (numeral_system)); \
+		}
+
 // TODO: Macros for enabling specific features if compiled with different versions of C++ standard
 // TODO: Iterative version (can work for C++14 and beyond)
 
@@ -112,8 +120,8 @@ bHelper()
 //template<char... chars>
 
 // TODO: Argument for numeral system (the base)
-//constexpr
-int b15Helper(const char* arg)
+constexpr
+int bHelper(const char* arg, std::size_t numeralSystem)
 {
 	#ifdef DEBUG
 	std::cout << "Calling b15Helper()\n";
@@ -171,7 +179,7 @@ int b15Helper(const char* arg)
 		std::cout << "exponent: " << exponent << "\n";
 		#endif
 
-		number += ((int)(*charIter_p - (char)charToIntOffset)) * pow(15, exponent--);
+		number += ((int)(*charIter_p - (char)charToIntOffset)) * pow(numeralSystem, exponent--);
 
 		#ifdef DEBUG
 		std::cout << "number: " << number << "\n";
@@ -186,9 +194,10 @@ int b15Helper(const char* arg)
 
 // TODO: The whole mechanism (macro-based) for literals containing letters
 // IMPORTANT: Is for case of "1A1"_b15;
+
 //constexpr
-int operator"" _b15(const char* arg, std::size_t n)
-{
-	return b15Helper(arg); // TODO: Take base numeral value of numeral system
-}
+//int operator"" _b15(const char* arg, std::size_t n)
+//{
+//	return b15Helper(arg); // TODO: Take base numeral value of numeral system
+//}
 

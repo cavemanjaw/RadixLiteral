@@ -10,8 +10,6 @@
 // Temporarily defined for run-time assertion
 #include <cassert>
 
-
-
 #ifdef DEBUG
 #endif
 
@@ -21,6 +19,9 @@ OPERATOR_LITERAL(2);
 
 // IMPORTANT: Is for the case of 111_b15;
 OPERATOR_LITERAL(15);
+
+// IMPORTANT: This is for the case of "A1B"_b15 and similar
+OPERATOR_LITERAL10(15);
 
 //constexpr bool testBinary()
 //{
