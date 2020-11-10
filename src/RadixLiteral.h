@@ -99,8 +99,8 @@ bHelper()
    // TODO: Assert or other check // TODO: Make a macro or a function out of the common part of the expression
    return c > '9' ?
 	    (c < 'Z' ?
-              (c - CHAR_TO_INT_UPPER_CASE_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>() :
-	      (c - CHAR_TO_INT_LOWER_CASE_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>()) :
+              (c - CHAR_TO_INT_LOWER_CASE_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>() :
+	      (c - CHAR_TO_INT_UPPER_CASE_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>()) :
 	  ((c - CHAR_TO_INT_NUMBER_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>()); // TODO: (c-'0') would get the actual int representation
 } //TODO: This would be called recursively - but no problem with char interpretation - lower base systems just won't have any letters
 
