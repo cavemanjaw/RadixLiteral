@@ -3,6 +3,9 @@
 #include<type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
 //#define _b(numeral_system)
 
+
+#include <iostream>
+
 #define CHAR_TO_INT_NUMBER_OFFSET 48
 #define CHAR_TO_INT_LOWER_CASE_OFFSET 55
 #define CHAR_TO_INT_UPPER_CASE_OFFSET 87
@@ -13,6 +16,8 @@ enum class enabler_t {};
 template<typename T>
 using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
 
+
+// TODO: If the token is more than 10-based then use the operator""(const char* arg, std::size_t n)
 #define OPERATOR_LITERAL(numeral_system) \
 	template<char... chars> \
 	constexpr int operator"" _b##numeral_system() \
@@ -23,6 +28,13 @@ using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
 // TODO: Macros for enabling specific features if compiled with different versions of C++ standard
 // TODO: Iterative version (can work for C++14 and beyond)
 
+// For having the literal for std::size_t objects
+constexpr std::size_t operator "" _z(unsigned long long arg)
+{
+	return arg;
+}
+
+// PROGRAM DESCRIPTION
 // Use cases:
 // 231_b4 -> operator""_b4<2, 3, 1>() -> 2*4^2 + 3*4^1 + 1*4^0
 // 254_b6 -> operator""_b6<2, 5, 4>()
@@ -96,30 +108,65 @@ bHelper()
 // TODO: For tests of 15-base system
 //template<char... chars>
 
-constexpr int b15Helper(const char* arg)
+// TODO: Argument for numeral system (the base)
+//constexpr
+int b15Helper(const char* arg)
 {
 	// Calculate the length of c-string
-	char* lengthIter_p = (char*)arg;
-	int cstringLenght = 0;
-	while (*lengthIter_p)
-	{
-		cstringLenght++;
-		lengthIter_p++;
-	}
-
 	char* charIter_p = (char*)arg;
-	int number = 0;
-	while(charIter_p)
+	std::size_t stringLen = std::size_t{0}; // Construct the size_t variable to avoid implicit casting
+	while (*charIter_p)
 	{
-		number += ((int)(*arg - '0')) * pow(15, --cstringLenght);
+		stringLen++;
 		charIter_p++;
 	}
+
+	// Reassign charIter_p to point to the beginning of c-string
+	charIter_p = (char*)arg;
+
+	// Currently calling templated pow(), so the chosen instantiation of pow depends on the type of this var
+	std::size_t number = std::size_t{0};
+	std::size_t exponent = stringLen - 1;
+
+	while (*charIter_p)
+	{
+		// pow() currently is also returning int type
+		// TODO: Should be different for letters!
+
+		// TODO: Initialized only to satisfy the compiler at this point
+		unsigned charToIntOffset = 0; // Only one byte needed - needed is the size of storage equal to the capacity of char
+
+		if (*charIter_p > '9')
+		{
+			if (*charIter_p < 'Z')
+			{
+				//CHAR_TO_INT_UPPER_CASE_OFFSET
+				charToIntOffset = CHAR_TO_INT_UPPER_CASE_OFFSET;
+			}
+			//CHAR_TO_INT_LOWER_CASE_OFFSET
+			charToIntOffset = CHAR_TO_INT_LOWER_CASE_OFFSET;
+		}
+		else
+		{
+			//CHAR_TO_INT_NUMBER_OFFSET
+			charToIntOffset = CHAR_TO_INT_NUMBER_OFFSET; // The same as charToIntOffset = (char)('0')
+		}
+		std::cout << "offset: " << charToIntOffset << "\n";
+		std::cout << "exponent: " << exponent << "\n";
+		number += ((int)(*charIter_p - (char)charToIntOffset)) * pow(15, exponent--);
+		std::cout << "number: " << number << "\n";
+		charIter_p++;
+	}
+
+	// Return the calculated number in base-10 numeral system
 	return number;
 }
 
+// TODO: The whole mechanism (macro-based) for literals containing letters
 // IMPORTANT: Is for case of "1A1"_b15;
-constexpr int operator"" _b15(const char* arg, std::size_t n)
+//constexpr
+int operator"" _b15(const char* arg, std::size_t n)
 {
-	return b15Helper(arg);
+	return b15Helper(arg); // TODO: Take base numeral value of numeral system
 }
 

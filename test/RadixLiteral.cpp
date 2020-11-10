@@ -4,6 +4,11 @@
 // Temporarily defined for run-time assertion
 #include <cassert>
 
+#define DEBUG
+
+#ifdef DEBUG
+#endif
+
 OPERATOR_LITERAL(3);
 OPERATOR_LITERAL(5);
 OPERATOR_LITERAL(2);
@@ -35,24 +40,29 @@ constexpr bool testTernary()
    return true;
 }
 
-//// TODO: operator"" taking different type of argument is needed
-//constexpr bool test15BaseLowerCase()
-//{
-//   //constexpr
-//   int value = ba1_b15;
-//   //static_assert(value == 2626, "testBinary failed! ba1_b15 != 2626");
-//   assert(("testBinary failed! BA1_b15 != 2626", value == 2626));
-//   return true;
-//}
-//
-//constexpr bool test15BaseUpperCase()
-//{
-//   //constexpr
-//   int value = BA1_b15;
-//   //static_assert(value == 2626, "testBinary failed! BA1_b15 != 2626");
-//   assert(("testBinary failed! BA1_b15 != 2626", value == 2626));
-//   return true;
-//}
+// TODO: operator"" taking different type of argument is needed
+//constexpr
+bool test15BaseLowerCase()
+{
+   //constexpr
+   int value = "ba1"_b15;
+   #ifdef DEBUG
+   std::cout << value << "\n";
+   #endif
+   //static_assert(value == 2626, "testBinary failed! ba1_b15 != 2626");
+   assert(("testBinary failed! BA1_b15 != 2626", value == 2626));
+   return true;
+}
+
+//constexpr
+bool test15BaseUpperCase()
+{
+   //constexpr
+   int value = "BA1"_b15;
+   //static_assert(value == 2626, "testBinary failed! BA1_b15 != 2626");
+   assert(("testBinary failed! BA1_b15 != 2626", value == 2626));
+   return true;
+}
 
 constexpr bool test15BaseOnlyDigits()
 {
@@ -62,10 +72,17 @@ constexpr bool test15BaseOnlyDigits()
    return true;
 }
 
-constexpr bool test15BaseDigitsAndLettersStartingDigits()
+//constexpr
+bool test15BaseDigitsAndLettersStartingDigits()
 {
+   // TODO: Test and debug with a macro - containing the static_assert and std::cout
    //constexpr
    int value = "1A1"_b15;
+
+   #ifdef DEBUG
+   std::cout << value << "\n";
+   #endif
+
    //static_assert(value == 2626, "testBinary failed! BA1_b15 != 2626");
    assert(("testBinary failed! 1A1_b15 != 376", value == 376));
    return true;
@@ -75,6 +92,9 @@ constexpr bool test15BaseDigitsAndLettersStartingDigits()
 //{
 //   //constexpr
 //   int value = A11_b15;
+//   #ifdef DEBUG
+//   std::cout << value;
+//   #endif
 //   //static_assert(value == 2626, "testBinary failed! BA1_b15 != 2626");
 //   assert(("testBinary failed! 111_b15 != 2626", value == 241));
 //   return true;
@@ -84,10 +104,17 @@ constexpr bool test15BaseDigitsAndLettersStartingDigits()
 // TODO: Remove main and rely only on compile-time checks?
 int main()
 {
+	//TODO: The number of defined functions should equal the number of calls down here
+
    //Run run-time tests
    (void)testBinary();
    (void)testTernary();
+
+   (void)test15BaseUpperCase();
+   (void)test15BaseLowerCase(); // TODO: Lower case is not working currently
+
    (void)test15BaseOnlyDigits();
+   (void)test15BaseDigitsAndLettersStartingDigits();
 
    //std::cout << 344_b3;
    //std::cout << 5_b5;
