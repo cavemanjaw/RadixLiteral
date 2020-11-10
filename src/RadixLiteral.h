@@ -3,8 +3,11 @@
 #include<type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
 //#define _b(numeral_system)
 
+//#define DEBUG
 
+#ifdef DEBUG
 #include <iostream>
+#endif
 
 #define CHAR_TO_INT_NUMBER_OFFSET 48
 #define CHAR_TO_INT_LOWER_CASE_OFFSET 55
@@ -112,6 +115,10 @@ bHelper()
 //constexpr
 int b15Helper(const char* arg)
 {
+	#ifdef DEBUG
+	std::cout << "Calling b15Helper()\n";
+	#endif
+
 	// Calculate the length of c-string
 	char* charIter_p = (char*)arg;
 	std::size_t stringLen = std::size_t{0}; // Construct the size_t variable to avoid implicit casting
@@ -138,23 +145,38 @@ int b15Helper(const char* arg)
 
 		if (*charIter_p > '9')
 		{
+			#ifdef DEBUG
+			std::cout << (int)*charIter_p << "\n";
+			#endif
+
 			if (*charIter_p < 'Z')
+			{
+				//CHAR_TO_INT_LOWER_CASE_OFFSET
+				charToIntOffset = CHAR_TO_INT_LOWER_CASE_OFFSET;
+			}
+			else
 			{
 				//CHAR_TO_INT_UPPER_CASE_OFFSET
 				charToIntOffset = CHAR_TO_INT_UPPER_CASE_OFFSET;
 			}
-			//CHAR_TO_INT_LOWER_CASE_OFFSET
-			charToIntOffset = CHAR_TO_INT_LOWER_CASE_OFFSET;
 		}
 		else
 		{
 			//CHAR_TO_INT_NUMBER_OFFSET
 			charToIntOffset = CHAR_TO_INT_NUMBER_OFFSET; // The same as charToIntOffset = (char)('0')
 		}
+
+		#ifdef DEBUG
 		std::cout << "offset: " << charToIntOffset << "\n";
 		std::cout << "exponent: " << exponent << "\n";
+		#endif
+
 		number += ((int)(*charIter_p - (char)charToIntOffset)) * pow(15, exponent--);
+
+		#ifdef DEBUG
 		std::cout << "number: " << number << "\n";
+		#endif
+
 		charIter_p++;
 	}
 

@@ -1,10 +1,16 @@
 #include "../src/RadixLiteral.h"
+
+// OPTIONAL DEBUG DEFINE
+//#define DEBUG
+
+#ifdef DEBUG
 #include <iostream>
+#endif
 
 // Temporarily defined for run-time assertion
 #include <cassert>
 
-#define DEBUG
+
 
 #ifdef DEBUG
 #endif
@@ -44,6 +50,9 @@ constexpr bool testTernary()
 //constexpr
 bool test15BaseLowerCase()
 {
+	#ifdef DEBUG
+	std::cout << "CALLING LOWER:\n";
+	#endif
    //constexpr
    int value = "ba1"_b15;
    #ifdef DEBUG
@@ -57,7 +66,10 @@ bool test15BaseLowerCase()
 //constexpr
 bool test15BaseUpperCase()
 {
-   //constexpr
+	#ifdef DEBUG
+	std::cout << "CALLING UPPER:\n";
+	#endif
+	//constexpr
    int value = "BA1"_b15;
    //static_assert(value == 2626, "testBinary failed! BA1_b15 != 2626");
    assert(("testBinary failed! BA1_b15 != 2626", value == 2626));
