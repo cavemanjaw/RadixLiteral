@@ -25,10 +25,22 @@
 ////// IMPORTANT: This is for the case of "A1B"_b15 and similar
 //OPERATOR_LITERAL10(15);
 //
+OPERATOR_LITERAL(2);
 OPERATOR_LITERAL(3);
 OPERATOR_LITERAL(5);
 OPERATOR_LITERAL(2);
 OPERATOR_LITERAL(15);
+
+
+//STATIC, COMPILE-TIME TESTS:
+static_assert(("testBinary failed! 111_b != 7", 111_b2 == 7));
+static_assert(("testTernary failed! 231_b3 != 28", 231_b3 == 28));
+static_assert(("testBinary failed! BA1_b15 != 2626", BA1_b15 == 2626));
+static_assert(("testBinary failed! BA1_b15 != 2626", BA1_b15 == 2626));
+static_assert(("testBinary failed! 111_b15 != 241", 111_b15 == 241));
+static_assert(("testBinary failed! 1A1_b15 != 376", 1A1_b15 == 376));
+static_assert(("testBinary failed! 111_b15 != 2626", 111_b15 == 241));
+
 
 //constexpr bool testBinary()
 //{
@@ -56,7 +68,7 @@ constexpr bool testTernary()
 }
 
 // TODO: operator"" taking different type of argument is needed
-//constexpr
+constexpr
 bool test15BaseLowerCase()
 {
 	#ifdef DEBUG
@@ -72,7 +84,7 @@ bool test15BaseLowerCase()
    return true;
 }
 
-//constexpr
+constexpr
 bool test15BaseUpperCase()
 {
 	#ifdef DEBUG
@@ -93,7 +105,7 @@ constexpr bool test15BaseOnlyDigits()
    return true;
 }
 
-//constexpr
+constexpr
 bool test15BaseDigitsAndLettersStartingDigits()
 {
    // TODO: Test and debug with a macro - containing the static_assert and std::cout
@@ -122,8 +134,9 @@ static bool (*testFunction[NUM_OF_TESTS])() =
 static_assert(NUM_OF_TESTS == sizeof(testFunction) / sizeof(testFunction[0]),
 			  "Number of tests is not equal to the test array size!");
 
+// TODO: For C++11 not possible to invoke tests - 'for' loop in the body of the function
 // TODO: Just a fun done with std::vector
-void runAllTests()
+constexpr void runAllTests()
 {
 	for (std::size_t test = 0_z; test < NUM_OF_TESTS; test++)
 	{
@@ -142,6 +155,7 @@ void runAllTests()
 //   assert(("testBinary failed! 111_b15 != 2626", value == 241));
 //   return true;
 //}
+
 
 // TODO: Remove main and rely only on compile-time checks?
 int main()
