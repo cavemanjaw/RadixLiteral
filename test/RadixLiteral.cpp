@@ -15,16 +15,6 @@
 
 #define NUM_OF_TESTS 6
 
-//OPERATOR_LITERAL(3);
-//OPERATOR_LITERAL(5);
-//OPERATOR_LITERAL(2);
-//
-//// IMPORTANT: Is for the case of 111_b15;
-//OPERATOR_LITERAL(15);
-//
-////// IMPORTANT: This is for the case of "A1B"_b15 and similar
-//OPERATOR_LITERAL10(15);
-
 OPERATOR_LITERAL(3);
 OPERATOR_LITERAL(5);
 OPERATOR_LITERAL(2);
@@ -34,20 +24,9 @@ OPERATOR_LITERAL(15);
 static_assert(111_b2 == 7, "testBinary failed! 111_b2 != 7");
 static_assert(231_b3 == 28, "testTernary failed! 231_b3 != 28");
 static_assert(111_b15 == 241, "test15BaseOnlyDigits failed! 111_b15 != 241");
-
-//static_assert(("testBinary failed! BA1_b15 != 2626", BA1_b15 == 2626));
-///static_assert(("testBinary failed! BA1_b15 != 2626", BA1_b15 == 2626));
-//static_assert(("testBinary failed! 111_b15 != 241", 111_b15 == 241));
-//static_assert(("testBinary failed! 1A1_b15 != 376", 1A1_b15 == 376));
-//static_assert(("testBinary failed! 111_b15 != 2626", 111_b15 == 241));
-
-
-//constexpr bool testBinary()
-//{
-//   constexpr int value = 111_b2;
-//   static_assert(value == 7, "testBinary failed! 111_b != 7");
-//}
-
+static_assert("ba1"_b15 == 2626, "test15BaseLowerCase failed! \"ba1\"_b15 != 2626");
+static_assert("BA1"_b15 == 2626, "test15BaseUpperCase failed! \"BA1\"_b15 != 2626");
+static_assert("1A1"_b15 == 376, "test15BaseDigitsAndLettersStartingDigits failed! \"1A1\"_b15 != 376");
 
 constexpr bool testBinary()
 {
