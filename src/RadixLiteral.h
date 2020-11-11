@@ -23,8 +23,8 @@ using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
 // TODO: Then try to unify that solution into one macro
 
 #define OPERATOR_LITERAL(numeral_system) \
-	OPERATOR_LITERAL_internal(numeral_system); \
-	OPERATOR_LITERAL10_internal(numeral_system); \
+	OPERATOR_LITERAL_internal(numeral_system);
+	//OPERATOR_LITERAL10_internal(numeral_system); \
 
 // TODO: If the token is more than 10-based then use the operator""(const char* arg, std::size_t n)
 #define OPERATOR_LITERAL_internal(numeral_system) \
