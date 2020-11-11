@@ -23,6 +23,10 @@ if [[ "$*" == "-g" ]]; then
    debug="-g"
 fi
 
+#for clang compilation
+clang="_clang"
+
 #if any of the flags is -g then append -g to the compile command
 
 find test/ -name "$outname*" | xargs g++-9 -o $outname $debug -std=c++2a
+find test/ -name "$outname*" | xargs clang++ -o $outname$clang -std=c++14

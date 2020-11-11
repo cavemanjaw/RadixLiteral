@@ -89,7 +89,7 @@ constexpr int bHelper() // No function to match in case of ambiguous call withou
 
 //std::enable_if_t<std::is_integral<T>::value>* = nullptr
 template<unsigned base, char c, char... tail> //std::enable_if<(sizeof...(tail) > 0)>* = nullptr> // TODO: Analyze, template template argument?
-std::enable_if<(sizeof...(tail) > 0), int>::type // TODO: Will that return a constexpr qualified int 'constexpr int'?
+typename std::enable_if<(sizeof...(tail) > 0), int>::type // TODO: Will that return a constexpr qualified int 'constexpr int'?
 //constexpr int
 bHelper()
 {
