@@ -24,22 +24,22 @@
 //
 ////// IMPORTANT: This is for the case of "A1B"_b15 and similar
 //OPERATOR_LITERAL10(15);
-//
-OPERATOR_LITERAL(2);
+
 OPERATOR_LITERAL(3);
 OPERATOR_LITERAL(5);
 OPERATOR_LITERAL(2);
 OPERATOR_LITERAL(15);
 
-
 //STATIC, COMPILE-TIME TESTS:
-static_assert(("testBinary failed! 111_b != 7", 111_b2 == 7));
-static_assert(("testTernary failed! 231_b3 != 28", 231_b3 == 28));
-static_assert(("testBinary failed! BA1_b15 != 2626", BA1_b15 == 2626));
-static_assert(("testBinary failed! BA1_b15 != 2626", BA1_b15 == 2626));
-static_assert(("testBinary failed! 111_b15 != 241", 111_b15 == 241));
-static_assert(("testBinary failed! 1A1_b15 != 376", 1A1_b15 == 376));
-static_assert(("testBinary failed! 111_b15 != 2626", 111_b15 == 241));
+static_assert(111_b2 == 7, "testBinary failed! 111_b2 != 7");
+static_assert(231_b3 == 28, "testTernary failed! 231_b3 != 28");
+static_assert(111_b15 == 241, "test15BaseOnlyDigits failed! 111_b15 != 241");
+
+//static_assert(("testBinary failed! BA1_b15 != 2626", BA1_b15 == 2626));
+///static_assert(("testBinary failed! BA1_b15 != 2626", BA1_b15 == 2626));
+//static_assert(("testBinary failed! 111_b15 != 241", 111_b15 == 241));
+//static_assert(("testBinary failed! 1A1_b15 != 376", 1A1_b15 == 376));
+//static_assert(("testBinary failed! 111_b15 != 2626", 111_b15 == 241));
 
 
 //constexpr bool testBinary()
