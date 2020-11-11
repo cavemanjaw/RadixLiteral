@@ -24,7 +24,7 @@ Then you can use custom numeric system literals in your code, for example:
 312_b4 
 ```
 
-For past 10-based numeral systems there is a limitation - you'll need to surround the desired value with quotation marks ```"" ```, similarly like when defining a string, for example:
+For past 10-based numeral systems there is a limitation - you'll need to surround the desired value with quotation marks ```""```, similarly like when defining a string, for example:
 ```c
 "3A1"_15
 ```
