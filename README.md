@@ -6,7 +6,7 @@ For example usage and build tests run compile script:
 ```bash
 ./compile
 ```
-It will build RadixLiteral and RadixLiteral_clang binaries (for g++ and Clang respectively). You can make use of appending ```bash -g ``` flag to the command for builing debug target.
+It will build RadixLiteral and RadixLiteral_clang binaries (for g++ and Clang respectively). You can make use of appending ``` -g ``` flag to the command for builing debug target.
 
 For use in client application - include the src/RadixLiteral.h header to your project and define the numeral system you want to use in your literals by defining following macro:
 ```c
