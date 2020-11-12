@@ -14,8 +14,20 @@
 
 // Reimplement type_traits for smaller binaries size when this header is included
 // (probably true, at least in a portion of cases)
-#include <type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
+//#include <type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
 //#define _b(numeral_system)
+
+namespace RadixLiteral
+{
+   template<bool B, class T = void>
+   struct enable_if {};
+
+   template<class T>
+   struct enable_if<true, T> {typedef T type;};
+
+   template<bool B, class T = void>
+   using enable_if_t = typename enable_if<B,T>::type;
+}
 
 //#define DEBUG
 
@@ -27,11 +39,10 @@
 #define CHAR_TO_INT_LOWER_CASE_OFFSET 55
 #define CHAR_TO_INT_UPPER_CASE_OFFSET 87
 
-// To satisfy enable_if interface, could be anything and won't be used
-enum class enabler_t {};
-
-template<typename T>
-using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
+//// To satisfy enable_if interface, could be anything and won't be used
+//enum class enabler_t {};
+//template<typename T>
+//using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
 
 // TODO: OPERATOR_LITERAL() that wraps OPERATOR_LITERAL10(15); and OPERATOR_LITERAL(15);
 // TODO: Then try to unify that solution into one macro
@@ -102,7 +113,7 @@ constexpr int bHelper() // No function to match in case of ambiguous call withou
 }
 
 //std::enable_if_t<std::is_integral<T>::value>* = nullptr
-template<unsigned base, char c, char... tail, std::enable_if_t<(sizeof...(tail) > 0)>* = nullptr> //std::enable_if<(sizeof...(tail) > 0)>* = nullptr> // TODO: Analyze, template template argument?
+template<unsigned base, char c, char... tail, RadixLiteral::enable_if_t<(sizeof...(tail) > 0)>* = nullptr> //std::enable_if<(sizeof...(tail) > 0)>* = nullptr> // TODO: Analyze, template template argument?
 //typename std::enable_if<(sizeof...(tail) > 0), int>::type // TODO: Will that return a constexpr qualified int 'constexpr int'?
 constexpr int
 bHelper()
