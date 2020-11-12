@@ -1,6 +1,20 @@
 // Implementation of user-defined literals for different base number literals
 
-#include<type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
+#ifndef RADIX_LITERAL_H
+#define RADIX_LITERAL_H
+
+#if __cplusplus >= 201402L // if C++14
+// Relaxed limitations on constexpr functions evaluated at compile time
+#else
+// constexpr evaluation in compile time has some restrictions
+// TODO: Other implementation needed for literals that use letters as "digits"
+// std::enable_if_t not available, could be easily typedefed with an enabler and enable_if (I think...)
+// static_assert tests using past-10 letter-using literals will fail
+#endif // #if __cplusplus >= 201402L // if C++14
+
+// Reimplement type_traits for smaller binaries size when this header is included
+// (probably true, at least in a portion of cases)
+#include <type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
 //#define _b(numeral_system)
 
 //#define DEBUG
@@ -207,3 +221,4 @@ int bHelper(const char* arg, std::size_t numeralSystem)
 //	return b15Helper(arg); // TODO: Take base numeral value of numeral system
 //}
 
+#endif // #ifndef RADIX_LITERAL_H
