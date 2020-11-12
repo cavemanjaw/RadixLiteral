@@ -18,6 +18,8 @@
 //#include <type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
 //#define _b(numeral_system)
 // For std::size_t, probably the most lightweight header that does not declare any function
+// could be made also with using size_type = decltype(alignof(char)); since standard imposes the return
+// type of sizeof, sizeof... and alignof to be std::size_t
 #include <cstddef>
 
 namespace RadixLiteral
