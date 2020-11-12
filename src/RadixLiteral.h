@@ -15,8 +15,10 @@
 // Reimplement type_traits for smaller binaries size when this header is included
 // (probably true, at least in a portion of cases)
 // TODO: std::size_t depends on it
-#include <type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
+//#include <type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
 //#define _b(numeral_system)
+// For std::size_t, probably the most lightweight header that does not declare any function
+#include <cstddef>
 
 namespace RadixLiteral
 {
