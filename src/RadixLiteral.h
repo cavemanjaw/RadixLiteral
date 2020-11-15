@@ -20,7 +20,7 @@
 // For std::size_t, probably the most lightweight header that does not declare any function
 // could be made also with using size_type = decltype(alignof(char)); since standard imposes the return
 // type of sizeof, sizeof... and alignof to be std::size_t
-#include <cstddef>
+//#include <cstddef>
 
 namespace RadixLiteral
 {
@@ -69,7 +69,7 @@ namespace RadixLiteral
 // TODO: The whole mechanism (macro-based) for literals containing letters
 // IMPORTANT: Is for case of "1A1"_b15;
 #define OPERATOR_LITERAL10_internal(numeral_system) \
-		constexpr int operator"" _b##numeral_system(const char* arg, std::size_t) \
+		constexpr int operator"" _b##numeral_system(const char* arg, RadixLiteral::size_t) \
 		{ \
 		return bHelper(arg, (numeral_system)); \
 		}
@@ -78,7 +78,7 @@ namespace RadixLiteral
 // TODO: Iterative version (can work for C++14 and beyond)
 
 // For having the literal for std::size_t objects
-constexpr std::size_t operator "" _z(unsigned long long arg)
+constexpr RadixLiteral::size_t operator "" _z(unsigned long long arg)
 {
 	return arg;
 }
@@ -159,7 +159,7 @@ bHelper()
 
 // TODO: Argument for numeral system (the base)
 constexpr
-int bHelper(const char* arg, std::size_t numeralSystem)
+int bHelper(const char* arg, RadixLiteral::size_t numeralSystem)
 {
 	#ifdef DEBUG
 	std::cout << "Calling b15Helper()\n";
@@ -167,7 +167,7 @@ int bHelper(const char* arg, std::size_t numeralSystem)
 
 	// Calculate the length of c-string
 	char* charIter_p = (char*)arg;
-	std::size_t stringLen = std::size_t{0}; // Construct the size_t variable to avoid implicit casting
+	RadixLiteral::size_t stringLen = RadixLiteral::size_t{0}; // Construct the size_t variable to avoid implicit casting
 	while (*charIter_p)
 	{
 		stringLen++;
@@ -178,8 +178,8 @@ int bHelper(const char* arg, std::size_t numeralSystem)
 	charIter_p = (char*)arg;
 
 	// Currently calling templated pow(), so the chosen instantiation of pow depends on the type of this var
-	std::size_t number = std::size_t{0};
-	std::size_t exponent = stringLen - 1;
+	RadixLiteral::size_t number = RadixLiteral::size_t{0};
+	RadixLiteral::size_t exponent = stringLen - 1;
 
 	while (*charIter_p)
 	{

@@ -9,6 +9,7 @@
 
 // Temporarily defined for run-time assertion
 #include <cassert>
+#include <cstddef>
 
 #ifdef DEBUG
 #endif
