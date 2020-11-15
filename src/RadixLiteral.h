@@ -32,6 +32,8 @@ namespace RadixLiteral
 
    template<bool B, class T = void>
    using enable_if_t = typename enable_if<B,T>::type;
+
+   using size_t = decltype(alignof(char));
 }
 
 //#define DEBUG
