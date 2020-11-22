@@ -17,9 +17,24 @@
 // TODO: std::size_t depends on it
 //#include <type_traits> // for enable_if, TODO: Any other option to disambiguate the template function call?
 //#define _b(numeral_system)
+
+
 // For std::size_t, probably the most lightweight header that does not declare any function
 // could be made also with using size_type = decltype(alignof(char)); since standard imposes the return
 // type of sizeof, sizeof... and alignof to be std::size_t
+
+// Funny enough - when expanded with g++ -E (9.3.0) the cstddef gets copy-pasted anyway, along with
+// ptrdiff_t type typedef
+// clang (3.8.0-2ubuntu4) acts in exactly the same way
+//# 1 "/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h" 1 3
+//# 194 "/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h" 3
+//namespace std
+//{
+//  typedef long unsigned int size_t;
+//  typedef long int ptrdiff_t;
+//
+//}
+
 //#include <cstddef>
 
 namespace RadixLiteral
