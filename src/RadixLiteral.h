@@ -5,8 +5,9 @@
 
 #if __cplusplus >= 201402L // if C++14
 // Relaxed limitations on constexpr functions evaluated at compile time
+#define COMPILE_TIME_SPECIFIER constexpr
 #else
-// constexpr evaluation in compile time has some restrictions
+// COMPILE_TIME_SPECIFIER evaluation in compile time has some restrictions
 // TODO: Other implementation needed for literals that use letters as "digits"
 // std::enable_if_t not available, could be easily typedefed with an enabler and enable_if (I think...)
 // static_assert tests using past-10 letter-using literals will fail
@@ -15,8 +16,9 @@
 // TODO: Needs to be inside the other __cplusplus #ifs (need to create a ladder)
 #if __cplusplus >= 202002L
 // C++20 speficic code
-// 1. consteval instead of constexpr (?)
+// 1. consteval instead of COMPILE_TIME_SPECIFIER (?)
 // 2. C++20 concepts for the number of parameters in parameter pack of chars.
+#define COMPILE_TIME_SPECIFIER consteval
 #endif
 
 // Reimplement type_traits for smaller binaries size when this header is included
@@ -84,7 +86,7 @@ namespace RadixLiteral
 // TODO: If the token is more than 10-based then use the operator""(const char* arg, std::size_t n)
 #define OPERATOR_LITERAL_internal(numeral_system) \
 	template<char... chars> \
-	constexpr int operator"" _b##numeral_system() \
+	COMPILE_TIME_SPECIFIER int operator"" _b##numeral_system() \
 	{ \
 	return bHelper<((numeral_system)), chars...>(); \
 	}
@@ -92,7 +94,7 @@ namespace RadixLiteral
 // TODO: The whole mechanism (macro-based) for literals containing letters
 // IMPORTANT: Is for case of "1A1"_b15;
 #define OPERATOR_LITERAL10_internal(numeral_system) \
-		constexpr int operator"" _b##numeral_system(const char* arg, RadixLiteral::size_t) \
+		COMPILE_TIME_SPECIFIER int operator"" _b##numeral_system(const char* arg, RadixLiteral::size_t) \
 		{ \
 		return bHelper(arg, (numeral_system)); \
 		}
@@ -101,7 +103,7 @@ namespace RadixLiteral
 // TODO: Iterative version (can work for C++14 and beyond)
 
 // For having the literal for std::size_t objects
-constexpr RadixLiteral::size_t operator "" _z(unsigned long long arg)
+COMPILE_TIME_SPECIFIER RadixLiteral::size_t operator "" _z(unsigned long long arg)
 {
 	return arg;
 }
@@ -118,7 +120,7 @@ constexpr RadixLiteral::size_t operator "" _z(unsigned long long arg)
 
 // Taking template parameter pack of non-type template arguments of type char
 // Variadic tamplate needed probably only for C++11 standard to assign meaning for the values of digits (because of no loops, no 'if' statements, but recursion possible etc.) 
-// No non-constexpr version needed, user-defined literals were introduced in C++11, the same standard as for constexpr
+// No non-COMPILE_TIME_SPECIFIER version needed, user-defined literals were introduced in C++11, the same standard as for COMPILE_TIME_SPECIFIER
 
 // TODO: Any macro magic to change the _b3 to, for example, _b6 in case of senary based system?
 // Need to just replace the hardcoded number in literal suffix and implementation
@@ -126,7 +128,7 @@ constexpr RadixLiteral::size_t operator "" _z(unsigned long long arg)
 // Introduce the least amount of macro substitution - only in operator""() implementation?
 
 template<typename Data> // TODO: Artificial constrains on the types that this template could be instantiated with?
-constexpr Data pow(Data arg, int power)
+COMPILE_TIME_SPECIFIER Data pow(Data arg, int power)
 {  
    // Only arithmetic types possible - how to deal with possible conversions and so on? How to deal with returning 1.0?
    // Could be done in one template or template partial specialization would be needed?
@@ -136,7 +138,7 @@ constexpr Data pow(Data arg, int power)
 // TODO: Ambiguous call in case of one template parameter - disambiguation presently done with enable_if(tail > 0)
 // Base case for variadic template - a helper function
 template<unsigned base, char c>
-constexpr int bHelper() // No function to match in case of ambiguous call without enable_if
+COMPILE_TIME_SPECIFIER int bHelper() // No function to match in case of ambiguous call without enable_if
 {
    // TODO: static_assert or other kind of check
    return (c - '0'); // TODO: Conversion from char to int is needed to give meaningful result? Or ASCII cares about it? Can this be instantiated with modified char template argment on the caller side?
@@ -144,12 +146,12 @@ constexpr int bHelper() // No function to match in case of ambiguous call withou
 
 //std::enable_if_t<std::is_integral<T>::value>* = nullptr
 template<unsigned base, char c, char... tail, RadixLiteral::enable_if_t<(sizeof...(tail) > 0)>* = nullptr> //std::enable_if<(sizeof...(tail) > 0)>* = nullptr> // TODO: Analyze, template template argument?
-//typename std::enable_if<(sizeof...(tail) > 0), int>::type // TODO: Will that return a constexpr qualified int 'constexpr int'?
-constexpr int
+//typename std::enable_if<(sizeof...(tail) > 0), int>::type // TODO: Will that return a COMPILE_TIME_SPECIFIER qualified int 'COMPILE_TIME_SPECIFIER int'?
+COMPILE_TIME_SPECIFIER int
 bHelper()
 {
    // In later C++ standards:
-   // constexpr if (sizeof.. (tail)) > 0 call this function
+   // COMPILE_TIME_SPECIFIER if (sizeof.. (tail)) > 0 call this function
    // else call <unsigned, char> bHelper
    // TODO: Assert or other check // TODO: Make a macro or a function out of the common part of the expression
    return c > '9' ?
@@ -162,7 +164,7 @@ bHelper()
 // TODO: Generalize with a macro printing a proper version of this function and introduce additional
 //       template parameter substituted with the macro arg?
 //template<char... chars> // At this point it should be a macro
-//constexpr int operator"" _b3()
+//COMPILE_TIME_SPECIFIER int operator"" _b3()
 //{
 //   return bHelper<chars...>();
 //}
@@ -172,7 +174,7 @@ bHelper()
 
 //#define OPERATOR_LITERAL(numeral_system) \
 //		template<char... chars> \
-//		constexpr int operator"" _b##numeral_system() \
+//		COMPILE_TIME_SPECIFIER int operator"" _b##numeral_system() \
 //		{ \
 //		   return bHelper<chars..., (numeral_system)>(); \
 //		}
@@ -181,7 +183,7 @@ bHelper()
 //template<char... chars>
 
 // TODO: Argument for numeral system (the base)
-constexpr
+COMPILE_TIME_SPECIFIER
 int bHelper(const char* arg, RadixLiteral::size_t numeralSystem)
 {
 	#ifdef DEBUG
@@ -256,7 +258,7 @@ int bHelper(const char* arg, RadixLiteral::size_t numeralSystem)
 // TODO: The whole mechanism (macro-based) for literals containing letters
 // IMPORTANT: Is for case of "1A1"_b15;
 
-//constexpr
+//COMPILE_TIME_SPECIFIER
 //int operator"" _b15(const char* arg, std::size_t n)
 //{
 //	return b15Helper(arg); // TODO: Take base numeral value of numeral system
