@@ -26,6 +26,7 @@
 // Funny enough - when expanded with g++ -E (9.3.0) the cstddef gets copy-pasted anyway, along with
 // ptrdiff_t type typedef
 // clang (3.8.0-2ubuntu4) acts in exactly the same way
+// Platform Ubuntu 4.4.0-145-generic, x86_64 platform
 //# 1 "/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h" 1 3
 //# 194 "/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h" 3
 //namespace std
