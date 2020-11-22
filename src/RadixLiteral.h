@@ -54,7 +54,7 @@ namespace RadixLiteral
 // TODO: OPERATOR_LITERAL() that wraps OPERATOR_LITERAL10(15); and OPERATOR_LITERAL(15);
 // TODO: Then try to unify that solution into one macro
 
-#define OPERATOR_LITERAL(numeral_system) \
+#define NUMERAL_SYSTEM(numeral_system) \
 	OPERATOR_LITERAL_internal(numeral_system); \
 	OPERATOR_LITERAL10_internal(numeral_system); \
 
