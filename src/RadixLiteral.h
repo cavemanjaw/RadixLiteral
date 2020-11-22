@@ -144,6 +144,32 @@ COMPILE_TIME_SPECIFIER int bHelper() // No function to match in case of ambiguou
    return (c - '0'); // TODO: Conversion from char to int is needed to give meaningful result? Or ASCII cares about it? Can this be instantiated with modified char template argment on the caller side?
 }
 
+
+#if __cplusplus >= 202002L
+
+template<char... chars> //class meets requirement or a variable meets requirements?
+concept IsNotEmptyCharacterParameterPack = (sizeof...(chars) > 0);
+
+//https://stackoverflow.com/questions/56062683/variadic-template-ambiguity-empty-parameter-pack
+//std::enable_if_t<std::is_integral<T>::value>* = nullptr
+template<unsigned base, char c, IsNotEmptyCharacterParameterPack... tail> //std::enable_if<(sizeof...(tail) > 0)>* = nullptr> // TODO: Analyze, template template argument?
+//typename std::enable_if<(sizeof...(tail) > 0), int>::type // TODO: Will that return a COMPILE_TIME_SPECIFIER qualified int 'COMPILE_TIME_SPECIFIER int'?
+COMPILE_TIME_SPECIFIER int
+bHelper()
+{
+   // In later C++ standards:
+   // COMPILE_TIME_SPECIFIER if (sizeof.. (tail)) > 0 call this function
+   // else call <unsigned, char> bHelper
+   // TODO: Assert or other check // TODO: Make a macro or a function out of the common part of the expression
+   return c > '9' ?
+	    (c < 'Z' ?
+              (c - CHAR_TO_INT_LOWER_CASE_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>() :
+	      (c - CHAR_TO_INT_UPPER_CASE_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>()) :
+	  ((c - CHAR_TO_INT_NUMBER_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>()); // TODO: (c-'0') would get the actual int representation
+} //TODO: This would be called recursively - but no problem with char interpretation - lower base systems just won't have any letters
+
+#else
+
 //std::enable_if_t<std::is_integral<T>::value>* = nullptr
 template<unsigned base, char c, char... tail, RadixLiteral::enable_if_t<(sizeof...(tail) > 0)>* = nullptr> //std::enable_if<(sizeof...(tail) > 0)>* = nullptr> // TODO: Analyze, template template argument?
 //typename std::enable_if<(sizeof...(tail) > 0), int>::type // TODO: Will that return a COMPILE_TIME_SPECIFIER qualified int 'COMPILE_TIME_SPECIFIER int'?
@@ -160,6 +186,8 @@ bHelper()
 	      (c - CHAR_TO_INT_UPPER_CASE_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>()) :
 	  ((c - CHAR_TO_INT_NUMBER_OFFSET) * pow(base, sizeof...(tail)) + bHelper<base, tail...>()); // TODO: (c-'0') would get the actual int representation
 } //TODO: This would be called recursively - but no problem with char interpretation - lower base systems just won't have any letters
+
+#endif
 
 // TODO: Generalize with a macro printing a proper version of this function and introduce additional
 //       template parameter substituted with the macro arg?
