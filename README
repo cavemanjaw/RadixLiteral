@@ -1,5 +1,5 @@
 # RadixLiteral
-RadixLiteral is header-only library implementing custom numeric system literal suffixes.
+RadixLiteral is header-only library implementing custom numeral system literal suffixes.
 
 # Usage
 For example usage and build tests run compile script:
@@ -11,12 +11,12 @@ It will build RadixLiteral and RadixLiteral_clang binaries (for g++ and Clang re
 
 For use in client application - include the src/RadixLiteral.h header to your project and define the numeral system you want to use in your literals by defining following macro:
 ```c
-OPERATOR_LITERAL(numeric_system);
+NUMERAL_SYSTEM(numeral_system_base);
 ```
 
 For example for base-4 numeric system literals:
 ```c
-OPERATOR_LITERAL(4);
+NUMERAL_SYSTEM(4);
 ```
 
 Then you can use custom numeric system literals in your code, for example:
