@@ -12,6 +12,13 @@
 // static_assert tests using past-10 letter-using literals will fail
 #endif // #if __cplusplus >= 201402L // if C++14
 
+// TODO: Needs to be inside the other __cplusplus #ifs (need to create a ladder)
+#if __cplusplus >= 202002L
+// C++20 speficic code
+// 1. consteval instead of constexpr (?)
+// 2. C++20 concepts for the number of parameters in parameter pack of chars.
+#endif
+
 // Reimplement type_traits for smaller binaries size when this header is included
 // (probably true, at least in a portion of cases)
 // TODO: std::size_t depends on it
