@@ -11,7 +11,7 @@
 #define CHAR_TO_INT_UPPER_CASE_OFFSET 87
 
 // TODO: Convert one digit in separate function?
-std::size_t converter(char* arg)
+std::size_t converter(char* arg, std::size_t base)
 {
 	// Calculate the length of c-string
 	char* charIter_p = (char*)arg;
@@ -49,7 +49,7 @@ std::size_t converter(char* arg)
 		}
 
 		number += ((std::size_t)
-		  (*charIter_p - charToIntOffset)) * std::pow(numeralSystem, exponent--);
+		  (*charIter_p - charToIntOffset)) * std::pow(base, exponent--);
 
 		charIter_p++;
 	}
@@ -57,6 +57,7 @@ std::size_t converter(char* arg)
 	// Return the calculated number in base-10 numeral system
 	return number;
 }
+
 
 
 
