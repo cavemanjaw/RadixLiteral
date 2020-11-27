@@ -145,6 +145,9 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, char* literal
 	}
 	else // k == 0, generate the literal
 	{
+		// TODO:
+		// Policy of testing here (TestStrategy)?
+		// Overloads (execution-time overhead) or static polymorphism (template printing only picked (random?) tests)
 		// TODO: Temporary printing the tests here, modularize eventually
 		// TODO: Store instead of putting to stdout
 		//std::cout << literalBuffer << std::endl; //converter(literalBuffer, 3)
