@@ -85,16 +85,16 @@ void GenerateCharacterLiterals()
 
 
 	// TODO: Hardcode
-	std::size_t digitLimit = 3;
+	std::size_t digitLimit = 7;
 
 	// HERE :)
-	char* nTuple = "012";
+	char* nTuple = "0123456";
 
 	// TODO: Zero will be zero, so no need to generate empty set
 	for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
 	{
 		// TODO: Third argument could be calculated from nTuple c-string
-		VariationsWithRepetitions(nTuple, digitRange, 3, literalBuffer);
+		VariationsWithRepetitions(nTuple, digitRange, digitLimit, literalBuffer);
 	}
 }
 
