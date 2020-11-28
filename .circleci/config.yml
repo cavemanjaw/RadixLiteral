@@ -12,7 +12,9 @@ jobs:
           password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
-      - run: ./compile -gen
+      - run:
+          no_output_timeout: 2040m
+          command: ./compile -gen
       
   build-for-windows:
     executor:
