@@ -10,25 +10,29 @@ void VariationsWithRepetitions(char* nTupleSet, std::size_t k, std::size_t n, ch
 void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, char* literalBuffer);
 
 // Globals, like "==" and so on, to speed up execution - do not create strings inside immediate cout expressions
+// Probably the best way would be to create them on stack once
 
-enum class LetterPolicy
-{
-	LOWER_CASE,
-	UPPER_CASE
+// enum for C
+//enum class LetterPolicy
+//{
+//	LOWER_CASE,
+//	UPPER_CASE
+//
+//};
+//
+//enum class TestStrategy
+//{
+//	PICKY_TEST,
+//	ALL_TEST
+//	//?
+//};
 
-};
-
-enum class TestStrategy
-{
-	PICKY_TEST,
-	ALL_TEST
-	//?
-};
-
-constexpr char* NumeralSuffix(std::size_t base);
+constexpr
+char* NumeralSuffix(std::size_t base);
 
 // For C++20 can be consteval
-constexpr std::size_t BufferSize()
+constexpr
+std::size_t BufferSize()
 {
 	// std::size_t bytes times the amount of bits in a byte plus one for NULL character
 	return sizeof(std::size_t) * (std::size_t)(CHAR_BIT) + std::size_t{1};
@@ -39,18 +43,18 @@ constexpr std::size_t BufferSize()
 //char* returning the literal for a given base numeral system that can be represented in size_t type
 char* MaximalRepresentableLiteral();
 
-char LargestDigit(std::size_t base, LetterPolicy letterPolicy)
-{
-	// Some char magic based on policy
-	if (letterPolicy == LetterPolicy::LOWER_CASE)
-	{
-
-	}
-	else // letterPolicy == LetterPolicy::UPPER_CASE
-	{
-
-	}
-}
+//char LargestDigit(std::size_t base, LetterPolicy letterPolicy)
+//{
+//	// Some char magic based on policy
+//	if (letterPolicy == LetterPolicy::LOWER_CASE)
+//	{
+//
+//	}
+//	else // letterPolicy == LetterPolicy::UPPER_CASE
+//	{
+//
+//	}
+//}
 
 char* CharacterLiteral(std::size_t numberOfDigits, char largestDigit)
 {
@@ -159,11 +163,6 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, char* literal
 
 }
 
-void print()
-{
-	std::cout << "Hello";
-	std::cout << "world";
-}
 
 int main(int argc, char* argv[])
 {
