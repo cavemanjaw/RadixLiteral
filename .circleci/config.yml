@@ -1,0 +1,31 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+  build-for-linux:
+    docker: 
+      - image: cimg/node:14.10.1
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - run: ./compile
+      
+  build-for-windows:
+    executor:
+      name: win/default
+      size: "medium"
+
+    steps:
+      - checkout
+      - run: ./compile
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - build-for-linux
+      - build-for-windows
