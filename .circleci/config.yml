@@ -12,7 +12,7 @@ jobs:
           password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
-      - run: ./compile
+      - run: ./compile -gen
       
   build-for-windows:
     executor:
