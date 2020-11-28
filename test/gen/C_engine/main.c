@@ -53,10 +53,10 @@ void GenerateCharacterLiterals()
 	memset(literalBuffer, '\0', sizeof(literalBuffer));
 
 	// TODO: Hardcode
-	size_t digitLimit = 7;
+	size_t digitLimit = 10;
 
 	// HERE :)
-	char* nTuple = "0123456";
+	char* nTuple = "0123456789";
 
 	// TODO: Zero will be zero, so no need to generate empty set
 	for (size_t digitRange = 1; digitRange < digitLimit; digitRange++)
