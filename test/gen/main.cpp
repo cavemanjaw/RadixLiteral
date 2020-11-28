@@ -89,10 +89,10 @@ void GenerateCharacterLiterals()
 
 
 	// TODO: Hardcode
-	std::size_t digitLimit = 10;
+	std::size_t digitLimit = 16;
 
 	// HERE :)
-	char* nTuple = "0123456789";
+	char* nTuple = "0123456789ABCDEF";
 
 	// TODO: Zero will be zero, so no need to generate empty set
 	for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
@@ -157,7 +157,7 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, char* literal
 		//std::cout << literalBuffer << std::endl; //converter(literalBuffer, 3)
 		//static_assert(111_b2 == 7, "testBinary failed! 111_b2 != 7");
 		std::cout << "static_assert(" << literalBuffer
-				  << "_b3" << " == " << converter(literalBuffer, 3)
+				  << "_b16" << " == " << converter(literalBuffer, 16)
 				  << ", \"test command log\");\n";
 	}
 
