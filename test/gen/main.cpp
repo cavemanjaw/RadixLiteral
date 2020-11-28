@@ -89,10 +89,10 @@ void GenerateCharacterLiterals()
 
 
 	// TODO: Hardcode
-	std::size_t digitLimit = 7;
+	std::size_t digitLimit = 10;
 
 	// HERE :)
-	char* nTuple = "0123456";
+	char* nTuple = "0123456789";
 
 	// TODO: Zero will be zero, so no need to generate empty set
 	for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
