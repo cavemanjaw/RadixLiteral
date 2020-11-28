@@ -5,27 +5,14 @@
 #include <string.h>
 
 void VariationsWithRepetitions(char* nTupleSet, size_t k, size_t n, char* literalBuffer);
+
 void GenerateNTuple(char* nTupleSet, size_t k, size_t n, char* literalBuffer);
 
-// Globals, like "==" and so on, to speed up execution - do not create strings inside immediate cout expressions
-// Probably the best way would be to create them on stack once
-
-// enum for C
-//enum class LetterPolicy
-//{
-//	LOWER_CASE,
-//	UPPER_CASE
-//
-//};
-//
-//enum class TestStrategy
-//{
-//	PICKY_TEST,
-//	ALL_TEST
-//	//?
-//};
-
 char* NumeralSuffix(size_t base);
+
+//char* returning the literal for a given base numeral system that can be represented in size_t type
+char* MaximalRepresentableLiteral();
+
 
 size_t BufferSize()
 {
@@ -33,23 +20,6 @@ size_t BufferSize()
 	return sizeof(size_t) * (size_t)(CHAR_BIT) + (size_t)1;
 }
 
-
-
-//char* returning the literal for a given base numeral system that can be represented in size_t type
-char* MaximalRepresentableLiteral();
-
-//char LargestDigit(size_t base, LetterPolicy letterPolicy)
-//{
-//	// Some char magic based on policy
-//	if (letterPolicy == LetterPolicy::LOWER_CASE)
-//	{
-//
-//	}
-//	else // letterPolicy == LetterPolicy::UPPER_CASE
-//	{
-//
-//	}
-//}
 
 char* CharacterLiteral(size_t numberOfDigits, char largestDigit)
 {
@@ -69,19 +39,18 @@ char* CharacterLiteral(size_t numberOfDigits, char largestDigit)
 	}
 }
 
+
 // On the testing side - finding duplicates would be great.
 // Finding generated literals that have the same converted values.
 
-
 // TODO: Generating the range of literals
 void GenerateCharacterLiterals()
-//(size_t numberOfDigits, char largestDigit) // TODO: For loop handling - the amout of steps
+//(size_t numberOfDigits, char largestDigit) // TODO: For loop handling - the amount of steps
 {
 	// TODO: Does this need to be a template for the buffer size to be computed at compile time?
 	// Allocate the buffer for generated literals
 	char literalBuffer[BufferSize()]; // TODO: Will this be actually calculated during compilation time?
 	memset(literalBuffer, '\0', sizeof(literalBuffer));
-
 
 	// TODO: Hardcode
 	size_t digitLimit = 7;
@@ -104,10 +73,12 @@ void InsertChar(char charToAppend, char* charBuffer, size_t position)
 	charBuffer[position] = charToAppend;
 }
 
+
 void DeleteChar(char* charBuffer, size_t position)
 {
 	charBuffer[position] = '\0';
 }
+
 
 size_t BufferLength(char* charBuffer)
 {
@@ -121,11 +92,13 @@ size_t BufferLength(char* charBuffer)
 	return size;
 }
 
+
 // Generate variations with repetitions, need to pass the
 void VariationsWithRepetitions(char* nTupleSet, size_t k, size_t n, char* literalBuffer)
 {
 	GenerateNTuple(nTupleSet, k, n, literalBuffer);
 }
+
 
 // k is the of length of one literal result, n is the number of elements in digit set for given numeral system
 void GenerateNTuple(char* nTupleSet, size_t k, size_t n, char* literalBuffer) // Literal buffer length
@@ -149,12 +122,6 @@ void GenerateNTuple(char* nTupleSet, size_t k, size_t n, char* literalBuffer) //
 		// Overloads (execution-time overhead) or static polymorphism (template printing only picked (random?) tests)
 		// TODO: Temporary printing the tests here, modularize eventually
 		// TODO: Store instead of putting to stdout
-		//std::cout << literalBuffer << std::endl; //converter(literalBuffer, 3)
-		//static_assert(111_b2 == 7, "testBinary failed! 111_b2 != 7");
-//		std::cout << "static_assert(" << literalBuffer
-//				  << "_b3" << " == " << converter(literalBuffer, 3)
-//				  << ", \"test command log\");\n";
-
 		printf("static_assert(%s_b3 == %zd, \"test command log\");\n", literalBuffer, converter(literalBuffer, 3));
 	}
 
@@ -174,6 +141,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-
-
-

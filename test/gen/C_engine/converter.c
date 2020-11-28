@@ -15,7 +15,7 @@ size_t converter(char* arg, size_t base)
 {
 	// Calculate the length of c-string
 	char* charIter_p = (char*)arg;
-	size_t stringLen = (size_t)0; // Construct the size_t variable to avoid implicit casting
+	size_t stringLen = (size_t)0;
 	while (*charIter_p)
 	{
 		stringLen++;
@@ -57,7 +57,3 @@ size_t converter(char* arg, size_t base)
 	// Return the calculated number in base-10 numeral system
 	return number;
 }
-
-
-
-
