@@ -6,8 +6,21 @@
 #include <string>
 #include <string.h>
 
-void VariationsWithRepetitions(char* nTupleSet, std::size_t k, std::size_t n, char* literalBuffer);
-void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, char* literalBuffer);
+class LiteralBuffer;
+
+void VariationsWithRepetitions(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer literalBuffer);
+void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer literalBuffer);
+
+constexpr
+char* NumeralSuffix(std::size_t base);
+
+// For C++20 can be consteval
+constexpr
+std::size_t BufferSize()
+{
+	// std::size_t bytes times the amount of bits in a byte plus one for NULL character
+	return sizeof(std::size_t) * (std::size_t)(CHAR_BIT) + std::size_t{1};
+}
 
 // Globals, like "==" and so on, to speed up execution - do not create strings inside immediate cout expressions
 // Probably the best way would be to create them on stack once
@@ -27,16 +40,50 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, char* literal
 //	//?
 //};
 
-constexpr
-char* NumeralSuffix(std::size_t base);
-
-// For C++20 can be consteval
-constexpr
-std::size_t BufferSize()
+class LiteralBuffer
 {
-	// std::size_t bytes times the amount of bits in a byte plus one for NULL character
-	return sizeof(std::size_t) * (std::size_t)(CHAR_BIT) + std::size_t{1};
-}
+public:
+	// TODO: Argument for the buffer size?
+	//constexpr
+	LiteralBuffer()
+		: size{std::size_t{0}}
+	{
+		std::memset(buffer, '\0', sizeof(buffer));
+	}
+
+
+	std::size_t Length()
+	{
+		return size;
+	}
+
+
+	void Insert(char charToAppend, std::size_t position)
+	{
+		buffer[position] = charToAppend;
+		size++;
+	}
+
+
+	void Delete(std::size_t position)
+	{
+		buffer[position] = '\0';
+		size--;
+	}
+
+	char* GetBuffer()
+	{
+		return buffer;
+	}
+
+
+private:
+	// TODO: constexpr specifier for calculation of buffer array size
+	char buffer[BufferSize()];
+	std::size_t size;
+};
+
+
 
 
 
@@ -60,6 +107,7 @@ char* CharacterLiteral(std::size_t numberOfDigits, char largestDigit)
 {
 	// TODO: Does this need to be a template for the buffer size to be computed at compile time?
 	// Allocate the buffer for generated literals
+	LiteralBuffer bufffer;
 	char literalBuffer[BufferSize()]; // TODO: Will this be actually calculated during compilation time?
 	std::memset(literalBuffer, '\0', sizeof(literalBuffer));
 
@@ -84,9 +132,7 @@ void GenerateCharacterLiterals()
 {
 	// TODO: Does this need to be a template for the buffer size to be computed at compile time?
 	// Allocate the buffer for generated literals
-	char literalBuffer[BufferSize()]; // TODO: Will this be actually calculated during compilation time?
-	std::memset(literalBuffer, '\0', sizeof(literalBuffer));
-
+	LiteralBuffer buffer;
 
 	// TODO: Hardcode
 	std::size_t digitLimit = 5;
@@ -98,7 +144,7 @@ void GenerateCharacterLiterals()
 	for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
 	{
 		// TODO: Third argument could be calculated from nTuple c-string
-		VariationsWithRepetitions(nTuple, digitRange, digitLimit, literalBuffer);
+		VariationsWithRepetitions(nTuple, digitRange, digitLimit, buffer);
 	}
 }
 
@@ -127,13 +173,13 @@ std::size_t BufferLength(char* charBuffer)
 }
 
 // Generate variations with repetitions, need to pass the
-void VariationsWithRepetitions(char* nTupleSet, std::size_t k, std::size_t n, char* literalBuffer)
+void VariationsWithRepetitions(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer literalBuffer)
 {
 	GenerateNTuple(nTupleSet, k, n, literalBuffer);
 }
 
 // k is the of length of one literal result, n is the number of elements in digit set for given numeral system
-void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, char* literalBuffer) // Literal buffer length
+void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer literalBuffer) // Literal buffer length
 {
 	if (k != 0)
 	{
@@ -142,9 +188,9 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, char* literal
 		for (std::size_t digit = 0; digit < n; digit++)
 		{
 			// Add at the end of the literalBuffer the char at "digit" position from nTupleSet
-			InsertChar(nTupleSet[digit], literalBuffer, BufferLength(literalBuffer)); // TODO: Save position instead of recalc!
+			literalBuffer.Insert(nTupleSet[digit], literalBuffer.Length());
 			GenerateNTuple(nTupleSet, k - 1, n, literalBuffer);
-			DeleteChar(literalBuffer, BufferLength(literalBuffer) - 1); // TODO: Save position instead of recalc!
+			literalBuffer.Delete(literalBuffer.Length());
 		}
 	}
 	else // k == 0, generate the literal
@@ -156,8 +202,8 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, char* literal
 		// TODO: Store instead of putting to stdout
 		//std::cout << literalBuffer << std::endl; //converter(literalBuffer, 3)
 		//static_assert(111_b2 == 7, "testBinary failed! 111_b2 != 7");
-		std::cout << "static_assert(" << literalBuffer
-				  << "_b5" << " == " << converter(literalBuffer, 5)
+		std::cout << "static_assert(" << literalBuffer.GetBuffer()
+				  << "_b5" << " == " << converter(literalBuffer.GetBuffer(), 5)
 				  << ", \"test command log\");\n";
 	}
 
