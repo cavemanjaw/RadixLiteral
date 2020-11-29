@@ -84,48 +84,12 @@ private:
 };
 
 
-
-
-
 //char* returning the literal for a given base numeral system that can be represented in size_t type
 char* MaximalRepresentableLiteral();
 
-//char LargestDigit(std::size_t base, LetterPolicy letterPolicy)
-//{
-//	// Some char magic based on policy
-//	if (letterPolicy == LetterPolicy::LOWER_CASE)
-//	{
-//
-//	}
-//	else // letterPolicy == LetterPolicy::UPPER_CASE
-//	{
-//
-//	}
-//}
-
-char* CharacterLiteral(std::size_t numberOfDigits, char largestDigit)
-{
-	// TODO: Does this need to be a template for the buffer size to be computed at compile time?
-	// Allocate the buffer for generated literals
-	LiteralBuffer bufffer;
-	char literalBuffer[BufferSize()]; // TODO: Will this be actually calculated during compilation time?
-	std::memset(literalBuffer, '\0', sizeof(literalBuffer));
-
-	for (std::size_t digitPosition = 0; digitPosition < numberOfDigits; digitPosition++)
-	{
-		// What should be the starting digit?
-		for (char digit = 0; digit <= largestDigit; digit++)
-		{
-			// Put the digit in buffer and print it (?)
-			literalBuffer[digitPosition] = digit;
-		}
-	}
-}
 
 // On the testing side - finding duplicates would be great.
 // Finding generated literals that have the same converted values.
-
-
 // TODO: Generating the range of literals
 void GenerateCharacterLiterals()
 //(std::size_t numberOfDigits, char largestDigit) // TODO: For loop handling - the amout of steps
@@ -135,10 +99,10 @@ void GenerateCharacterLiterals()
 	LiteralBuffer buffer;
 
 	// TODO: Hardcode
-	std::size_t digitLimit = 5;
+	std::size_t digitLimit = 7;
 
 	// HERE :)
-	char* nTuple = "01234";
+	char* nTuple = "0123456";
 
 	// TODO: Zero will be zero, so no need to generate empty set
 	for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
@@ -148,29 +112,6 @@ void GenerateCharacterLiterals()
 	}
 }
 
-
-// Make the buffer a class instead of such procedural programming
-void InsertChar(char charToAppend, char* charBuffer, std::size_t position)
-{
-	charBuffer[position] = charToAppend;
-}
-
-void DeleteChar(char* charBuffer, std::size_t position)
-{
-	charBuffer[position] = '\0';
-}
-
-std::size_t BufferLength(char* charBuffer)
-{
-	std::size_t size = 0;
-
-	while (*charBuffer++)
-	{
-		size++;
-	}
-
-	return size;
-}
 
 // Generate variations with repetitions, need to pass the
 void VariationsWithRepetitions(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer literalBuffer)
@@ -203,7 +144,7 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 		//std::cout << literalBuffer << std::endl; //converter(literalBuffer, 3)
 		//static_assert(111_b2 == 7, "testBinary failed! 111_b2 != 7");
 		std::cout << "static_assert(" << literalBuffer.GetBuffer()
-				  << "_b5" << " == " << converter(literalBuffer.GetBuffer(), 5)
+				  << "_b7" << " == " << converter(literalBuffer.GetBuffer(), 7)
 				  << ", \"test command log\");\n";
 	}
 
