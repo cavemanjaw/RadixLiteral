@@ -89,6 +89,8 @@ private:
 //char* returning the literal for a given base numeral system that can be represented in size_t type
 char* MaximalRepresentableLiteral();
 
+char* CharacterSet(std::size_t base);
+
 
 // On the testing side - finding duplicates would be great.
 // Finding generated literals that have the same converted values.
@@ -101,10 +103,10 @@ void GenerateCharacterLiterals()
 	LiteralBuffer buffer;
 
 	// TODO: Hardcode
-	std::size_t digitLimit = 10;
+	std::size_t digitLimit = 5;
 
 	// HERE :)
-	char* nTuple = "0123456789";
+	char* nTuple = "01234";
 
 	// TODO: Zero will be zero, so no need to generate empty set
 	for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
@@ -146,7 +148,7 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 		//std::cout << literalBuffer << std::endl; //converter(literalBuffer, 3)
 		//static_assert(111_b2 == 7, "testBinary failed! 111_b2 != 7");
 		std::cout << "static_assert(" << literalBuffer.GetBuffer()
-				  << "_b10" << " == " << converter(literalBuffer.GetBuffer(), 10)
+				  << "_b" << n << " == " << converter(literalBuffer.GetBuffer(), n)
 				  << ", \"test command log\");\n";
 	}
 
