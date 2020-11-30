@@ -51,6 +51,8 @@ public:
 		std::memset(buffer, '\0', sizeof(buffer));
 	}
 
+	LiteralBuffer(const LiteralBuffer& rhs) = default;
+	LiteralBuffer& operator=(const LiteralBuffer& rhs) = default;
 
 	std::size_t Length()
 	{
@@ -99,10 +101,10 @@ void GenerateCharacterLiterals()
 	LiteralBuffer buffer;
 
 	// TODO: Hardcode
-	std::size_t digitLimit = 11;
+	std::size_t digitLimit = 10;
 
 	// HERE :)
-	char* nTuple = "0123456789A";
+	char* nTuple = "0123456789";
 
 	// TODO: Zero will be zero, so no need to generate empty set
 	for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
@@ -144,7 +146,7 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 		//std::cout << literalBuffer << std::endl; //converter(literalBuffer, 3)
 		//static_assert(111_b2 == 7, "testBinary failed! 111_b2 != 7");
 		std::cout << "static_assert(" << literalBuffer.GetBuffer()
-				  << "_b11" << " == " << converter(literalBuffer.GetBuffer(), 11)
+				  << "_b10" << " == " << converter(literalBuffer.GetBuffer(), 10)
 				  << ", \"test command log\");\n";
 	}
 
