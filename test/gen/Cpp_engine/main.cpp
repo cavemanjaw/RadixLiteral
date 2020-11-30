@@ -25,13 +25,11 @@ std::size_t BufferSize()
 // Globals, like "==" and so on, to speed up execution - do not create strings inside immediate cout expressions
 // Probably the best way would be to create them on stack once
 
-// enum for C
-//enum class LetterPolicy
-//{
-//	LOWER_CASE,
-//	UPPER_CASE
-//
-//};
+enum class LetterPolicy
+{
+	LOWER_CASE,
+	UPPER_CASE
+};
 //
 //enum class TestStrategy
 //{
@@ -103,30 +101,38 @@ char* MaximalRepresentableLiteral();
 // the characterSet
 // TODO: Character set for both upper- and lower- cases
 // TODO: Consider the maximal number of digits for a literal and pass around a LiteralBuffer (for example)
-LiteralBuffer CharacterSet(std::size_t base)
+LiteralBuffer CharacterSet(std::size_t base, LetterPolicy letterPolicy)// TODO: Template or constexpr if
 {
 	// For the PART of a base being less or equal to 10, do...
 	LiteralBuffer characterSet;
-	if (base <= 10)
+	std::size_t digitPosition = 0;
+
+	char baseCharacter = '0';
+
+	while (digitPosition <= 10 && digitPosition < base)
 	{
-		char baseCharacter = '0';
-		for (std::size_t digitPosition = 0; digitPosition < base; digitPosition++)
-		{
-			characterSet.Insert(baseCharacter++);
-		}
+		characterSet.Insert(baseCharacter++);
+		digitPosition++;
 	}
 
-	// TODO: The next interval of ASCII characters
-//	std::size_t startingPosition = 0; // TODO: Should be the end of previous interval
-//	if (base > 10)
-//	{
-//		// Base character for this part of character set - a given interval of characters in the set
-//		char baseCharacter = 'A';
-//		for (std::size_t digitPosition = startingPosition; digitPosition < base; digitPosition++)
-//		{
-//			characterSet.Insert(baseCharacter++);
-//		}
-//	}
+	// Next digit imterval depends on letterPolicy
+	// TODO: Can be a ternary operator
+	if (letterPolicy == LetterPolicy::LOWER_CASE)
+	{
+		baseCharacter = 'a';
+	}
+	else // letterPolicy == LetterPolicy::UPPER_CASE
+	{
+		baseCharacter = 'A';
+	}
+
+	// TODO: Loop breaking condition for more than 'Z' needed
+	while (digitPosition < base)
+	{
+		characterSet.Insert(baseCharacter++);
+		digitPosition++;
+	}
+
 	return characterSet;
 }
 
@@ -144,7 +150,7 @@ void GenerateCharacterLiterals()
 	std::size_t digitLimit = 5;
 
 	// HERE :)
-	LiteralBuffer nTuple = CharacterSet(digitLimit);
+	LiteralBuffer nTuple = CharacterSet(digitLimit, LetterPolicy::UPPER_CASE);
 	//char* nTuple = "01234";
 
 	// TODO: Zero will be zero, so no need to generate empty set
