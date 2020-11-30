@@ -127,6 +127,7 @@ LiteralBuffer CharacterSet(std::size_t base)
 //			characterSet.Insert(baseCharacter++);
 //		}
 //	}
+	return characterSet;
 }
 
 // On the testing side - finding duplicates would be great.
@@ -143,13 +144,14 @@ void GenerateCharacterLiterals()
 	std::size_t digitLimit = 5;
 
 	// HERE :)
-	char* nTuple = "01234";
+	LiteralBuffer nTuple = CharacterSet(digitLimit);
+	//char* nTuple = "01234";
 
 	// TODO: Zero will be zero, so no need to generate empty set
 	for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
 	{
 		// TODO: Third argument could be calculated from nTuple c-string
-		VariationsWithRepetitions(nTuple, digitRange, digitLimit, buffer);
+		VariationsWithRepetitions(nTuple.GetBuffer(), digitRange, digitLimit, buffer);
 	}
 }
 
