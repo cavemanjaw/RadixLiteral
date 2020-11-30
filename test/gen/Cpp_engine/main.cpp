@@ -67,6 +67,13 @@ public:
 	}
 
 
+	void Insert(char charToAppend)
+	{
+		buffer[size] = charToAppend;
+		size++;
+	}
+
+
 	void Delete(std::size_t position)
 	{
 		buffer[position] = '\0';
@@ -89,8 +96,38 @@ private:
 //char* returning the literal for a given base numeral system that can be represented in size_t type
 char* MaximalRepresentableLiteral();
 
-char* CharacterSet(std::size_t base);
+// TODO: Move to C_engine implementation
+//char* CharacterSet(std::size_t base);
 
+// TODO: Break into several (two?) intervals of inserting (by calling Insert()) characters to
+// the characterSet
+// TODO: Character set for both upper- and lower- cases
+// TODO: Consider the maximal number of digits for a literal and pass around a LiteralBuffer (for example)
+LiteralBuffer CharacterSet(std::size_t base)
+{
+	// For the PART of a base being less or equal to 10, do...
+	LiteralBuffer characterSet;
+	if (base <= 10)
+	{
+		char baseCharacter = '0';
+		for (std::size_t digitPosition = 0; digitPosition < base; digitPosition++)
+		{
+			characterSet.Insert(baseCharacter++);
+		}
+	}
+
+	// TODO: The next interval of ASCII characters
+//	std::size_t startingPosition = 0; // TODO: Should be the end of previous interval
+//	if (base > 10)
+//	{
+//		// Base character for this part of character set - a given interval of characters in the set
+//		char baseCharacter = 'A';
+//		for (std::size_t digitPosition = startingPosition; digitPosition < base; digitPosition++)
+//		{
+//			characterSet.Insert(baseCharacter++);
+//		}
+//	}
+}
 
 // On the testing side - finding duplicates would be great.
 // Finding generated literals that have the same converted values.
