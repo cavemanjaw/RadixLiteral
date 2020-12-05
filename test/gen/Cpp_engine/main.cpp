@@ -200,21 +200,21 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 
 }
 
-void GenerateRandomTestData()
-{
-	// Go over a arbitrary number of test and generate a literal with random length and random base
-
-}
-
-void GenerateRandomLiteral()
-{
-	// Generate one single random literal
-	// Take a random base,
-	//take a random set of digits < random base,
-	//take a random length < BufferSize() rturn value
-	// !!the literal decimal value needs to be smaller that max value of std::size_t
-	// Generate the literal and calculate the decimal value by calling converter()
-}
+//void GenerateRandomTestData()
+//{
+//	// Go over a arbitrary number of test and generate a literal with random length and random base
+//
+//}
+//
+//void GenerateRandomLiteral()
+//{
+//	// Generate one single random literal
+//	// Take a random base,
+//	//take a random set of digits < random base,
+//	//take a random length < BufferSize() rturn value
+//	// !!the literal decimal value needs to be smaller that max value of std::size_t
+//	// Generate the literal and calculate the decimal value by calling converter()
+//}
 
 
 int main(int argc, char* argv[])
