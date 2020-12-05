@@ -147,7 +147,7 @@ void GenerateCharacterLiterals()
 	LiteralBuffer buffer;
 
 	// TODO: Hardcode
-	std::size_t digitLimit = 5;
+	std::size_t digitLimit = 8; // 7 can be calculated on Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz 0m43.029s, 8 causes problems
 
 	// HERE :)
 	LiteralBuffer nTuple = CharacterSet(digitLimit, LetterPolicy::UPPER_CASE);
@@ -171,6 +171,7 @@ void VariationsWithRepetitions(char* nTupleSet, std::size_t k, std::size_t n, Li
 // k is the of length of one literal result, n is the number of elements in digit set for given numeral system
 void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer literalBuffer) // Literal buffer length
 {
+	//TODO: Create a ladder of the maximal representable value for every system
 	if (k != 0)
 	{
 		// TODO: Make it work to not generate leading zeros
@@ -199,6 +200,22 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 
 }
 
+void GenerateRandomTestData()
+{
+	// Go over a arbitrary number of test and generate a literal with random length and random base
+
+}
+
+void GenerateRandomLiteral()
+{
+	// Generate one single random literal
+	// Take a random base,
+	//take a random set of digits < random base,
+	//take a random length < BufferSize() rturn value
+	// !!the literal decimal value needs to be smaller that max value of std::size_t
+	// Generate the literal and calculate the decimal value by calling converter()
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -213,6 +230,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-
-
-
