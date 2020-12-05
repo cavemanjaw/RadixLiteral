@@ -147,7 +147,7 @@ void GenerateCharacterLiterals()
 	LiteralBuffer buffer;
 
 	// TODO: Hardcode
-	std::size_t digitLimit = 8; // 7 can be calculated on Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz 0m43.029s, 8 causes problems
+	std::size_t digitLimit = 5; // 7 can be calculated on Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz 0m43.029s, 8 causes problems
 
 	// HERE :)
 	LiteralBuffer nTuple = CharacterSet(digitLimit, LetterPolicy::UPPER_CASE);
