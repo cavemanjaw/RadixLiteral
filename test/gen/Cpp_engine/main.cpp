@@ -5,6 +5,7 @@
 #include <cstring>
 #include <string>
 #include <string.h>
+#include <random>
 
 class LiteralBuffer;
 
@@ -205,16 +206,39 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 //	// Go over a arbitrary number of test and generate a literal with random length and random base
 //
 //}
-//
-//void GenerateRandomLiteral()
-//{
-//	// Generate one single random literal
-//	// Take a random base,
-//	//take a random set of digits < random base,
-//	//take a random length < BufferSize() rturn value
-//	// !!the literal decimal value needs to be smaller that max value of std::size_t
-//	// Generate the literal and calculate the decimal value by calling converter()
-//}
+// Generates random literal of specified base
+// TODO: maxNumOfDigits versus random feeded numOfDigits?
+void GenerateRandomLiteral(std::size_t maxNumOfDigits, std::size_t base)
+{
+	// Construct the suffix for the literal
+	std::string baseSuffix = "_b" + std::to_string(base);
+	std::random_device randomDevice; // Will be used to obtain a seed for the random number engine
+	std::mt19937 generator(randomDevice()); //Standard mersenne_twister_engine seeded with randomDevice()
+
+	std::uniform_int_distribution<> characterSetDist(0, base);
+	std::uniform_int_distribution<> literalInsertionDist(0, base - 1);
+
+	// Get a random character set for given base - probably is not even needed
+	LiteralBuffer characterSet = CharacterSet(characterSetDist(generator), LetterPolicy::UPPER_CASE);
+	LiteralBuffer literal;
+
+	for (std::size_t digit = 0; digit < maxNumOfDigits; digit++)
+	{
+		literal.Insert((characterSet.GetBuffer())[literalInsertionDist(generator)]);
+	}
+
+	// Generate a random integer up to the base value
+	// Generate one single random literal
+	// Take a random base, - or take every possible base...
+	//take a random set of digits < random base,
+	//take a random length < BufferSize() rturn value
+	// !!the literal decimal value needs to be smaller that max value of std::size_t
+	// Generate the literal and calculate the decimal value by calling converter()
+
+	// Maximal number of digit is the number of bits that std::size_t is represented by
+	// No numeral system could
+	std::size_t maximalNumberOfDigits = BufferSize() - 1;
+}
 
 
 int main(int argc, char* argv[])
