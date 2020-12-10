@@ -3,6 +3,7 @@
 
 #include "utils.h"
 #include <cstring>
+#include <string>
 
 
 // TODO: Move to .c implementation file
@@ -51,6 +52,11 @@ public:
 	char* GetBuffer()
 	{
 		return buffer;
+	}
+
+	operator std::string()
+	{
+		return std::string{GetBuffer()};
 	}
 
 

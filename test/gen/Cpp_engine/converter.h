@@ -9,8 +9,9 @@
 // Type larger than size_t could cause overflow or truncation on single-digit literal in product code
 // The function argument 'char*' enables low-level, simple and efficient solution
 
-// Converts a char* c-style string (first argument), which is a representation of a numeral literal
-// in a a non-10 valued base of numeral system (the second argument) to std::size_t typed decimal number (the return value)
-std::size_t converter(char* arg, std::size_t base);
+// Converts a const char* c-style string (first argument), which is a representation of a numeral literal
+// in a a non-10 valued base of numeral system (the second argument)
+// to std::size_t typed decimal number (the return value)
+std::size_t converter(const char* arg, std::size_t base);
 
 #endif // #ifndef CONVERTER_H

@@ -1,4 +1,7 @@
 #include "converter.h"
+#include "LiteralBuffer.h"
+#include "utils.h"
+
 #include <iostream>
 #include <cstddef>
 #include <climits>
@@ -7,7 +10,6 @@
 #include <string.h>
 #include <random>
 
-class LiteralBuffer;
 
 void VariationsWithRepetitions(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer literalBuffer);
 void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer literalBuffer);
@@ -16,88 +18,26 @@ constexpr
 char* NumeralSuffix(std::size_t base);
 std::string GenerateRandomLiteral(std::size_t literalLength, std::size_t base, std::size_t maxPossibleDigit);
 
-// For C++20 can be consteval
-constexpr
-std::size_t BufferSize()
-{
-	// std::size_t bytes times the amount of bits in a byte plus one for NULL character
-	return sizeof(std::size_t) * (std::size_t)(CHAR_BIT) + std::size_t{1};
-}
 
 // Globals, like "==" and so on, to speed up execution - do not create strings inside immediate cout expressions
 // Probably the best way would be to create them on stack once
 
-enum class LetterPolicy
+
+// TODO: Breaking const correctness by having non-const reference to literalBuffer
+void PrintLiteralStaticAssert(LiteralBuffer& literalBuffer, std::size_t base)
 {
-	LOWER_CASE,
-	UPPER_CASE
-};
+	std::cout << "static_assert(" << literalBuffer.GetBuffer()
+			  << "_b" << base << " == " << converter(literalBuffer.GetBuffer(), base)
+			  << ", \"test command log\");\n";
+}
 
-enum class TestingPolicy
+// TODO: _b not needed in GenerateRandomLiteral() !!!!!! // to converter need to pass char*!!!!!!
+void PrintLiteralStaticAssert(std::string literalString, std::size_t base)
 {
-	ALL_TEST,
-	RANDOM_TEST
-};
-//
-//enum class TestStrategy
-//{
-//	PICKY_TEST,
-//	ALL_TEST
-//	//?
-//};
-
-class LiteralBuffer
-{
-public:
-	// TODO: Argument for the buffer size?
-	//constexpr
-	LiteralBuffer()
-		: size{std::size_t{0}}
-	{
-		std::memset(buffer, '\0', sizeof(buffer));
-	}
-
-	LiteralBuffer(const LiteralBuffer& rhs) = default;
-	LiteralBuffer& operator=(const LiteralBuffer& rhs) = default;
-
-	std::size_t Length()
-	{
-		return size;
-	}
-
-
-	void Insert(char charToAppend, std::size_t position)
-	{
-		buffer[position] = charToAppend;
-		size++;
-	}
-
-
-	void Insert(char charToAppend)
-	{
-		buffer[size] = charToAppend;
-		size++;
-	}
-
-
-	void Delete(std::size_t position)
-	{
-		buffer[position] = '\0';
-		size--;
-	}
-
-	char* GetBuffer()
-	{
-		return buffer;
-	}
-
-
-private:
-	// TODO: constexpr specifier for calculation of buffer array size
-	char buffer[BufferSize()];
-	std::size_t size;
-};
-
+	std::cout << "static_assert(" << literalString
+			  << "_b" << base << " == " << converter(literalString.c_str(), base)
+			  << ", \"test command log\");\n";
+}
 
 //char* returning the literal for a given base numeral system that can be represented in size_t type
 char* MaximalRepresentableLiteral();
@@ -178,6 +118,7 @@ void GenerateCharacterLiterals(TestingPolicy testingPolicy)
 		{
 			// Need to cout it
 			GenerateRandomLiteral(digitLimit, digitLimit, digitLimit);
+			PrintLiteralStaticAssert(GenerateRandomLiteral(digitLimit, digitLimit, digitLimit), digitLimit);
 		}
 	}
 }
@@ -207,6 +148,7 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 	}
 	else // k == 0, generate the literal
 	{
+		PrintLiteralStaticAssert(literalBuffer, n);
 		// TODO:
 		// Policy of testing here (TestStrategy)?
 		// Overloads (execution-time overhead) or static polymorphism (template printing only picked (random?) tests)
@@ -214,11 +156,10 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 		// TODO: Store instead of putting to stdout
 		//std::cout << literalBuffer << std::endl; //converter(literalBuffer, 3)
 		//static_assert(111_b2 == 7, "testBinary failed! 111_b2 != 7");
-		std::cout << "static_assert(" << literalBuffer.GetBuffer()
-				  << "_b" << n << " == " << converter(literalBuffer.GetBuffer(), n)
-				  << ", \"test command log\");\n";
+//		std::cout << "static_assert(" << literalBuffer.GetBuffer()
+//				  << "_b" << n << " == " << converter(literalBuffer.GetBuffer(), n)
+//				  << ", \"test command log\");\n";
 	}
-
 }
 
 //void GenerateRandomTestData()
@@ -231,7 +172,7 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 std::string GenerateRandomLiteral(std::size_t literalLength, std::size_t base, std::size_t maxPossibleDigit)
 {
 	// Construct the suffix for the literal
-	std::string baseSuffix = "_b" + std::to_string(base); //Parametrize from "main" or global (probably bad)
+	//std::string baseSuffix = "_b" + std::to_string(base); //Parametrize from "main" or global (probably bad)
 	std::random_device randomDevice; // Will be used to obtain a seed for the random number engine
 	std::mt19937 generator(randomDevice()); //Standard mersenne_twister_engine seeded with randomDevice()
 
@@ -251,7 +192,7 @@ std::string GenerateRandomLiteral(std::size_t literalLength, std::size_t base, s
 	}
 
 	// TODO: Implement conversion between LiteralBuffer and std::string
-	std::string randomLiteral = std::string(literal.GetBuffer()) + baseSuffix;
+	std::string randomLiteral = std::string(literal.GetBuffer()); //+ baseSuffix;
 
 	return randomLiteral;
 
@@ -286,6 +227,7 @@ int main(int argc, char* argv[])
 //	memset(literalBuffer, '\0', sizeof(literalBuffer));
 //	GenerateNTuple("AB", 3, 2, literalBuffer);
 	GenerateCharacterLiterals(TestingPolicy::ALL_TEST);
+	//GenerateCharacterLiterals(TestingPolicy::RANDOM_TEST);
 
 	return 0;
 }

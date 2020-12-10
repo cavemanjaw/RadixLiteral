@@ -13,6 +13,8 @@
 # this is bad
 # echo "$1" | sed -e 's/^.*\..*$/^.*$/g'
 
+#TODO: Custom flag to bind one of the engines - C++ based, C based or Python based
+
 if [ -n "$1" ] && [ $1 != "-g" ] && [ $1 != "-gen" ]; then
    outname=$(echo "$1" | sed -E 's/^(.*)\..*/\1/g')
 else
