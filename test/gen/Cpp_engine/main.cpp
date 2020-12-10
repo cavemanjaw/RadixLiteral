@@ -14,6 +14,7 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 
 constexpr
 char* NumeralSuffix(std::size_t base);
+std::string GenerateRandomLiteral(std::size_t literalLength, std::size_t base, std::size_t maxPossibleDigit);
 
 // For C++20 can be consteval
 constexpr
@@ -30,6 +31,12 @@ enum class LetterPolicy
 {
 	LOWER_CASE,
 	UPPER_CASE
+};
+
+enum class TestingPolicy
+{
+	ALL_TEST,
+	RANDOM_TEST
 };
 //
 //enum class TestStrategy
@@ -140,25 +147,38 @@ LiteralBuffer CharacterSet(std::size_t base, LetterPolicy letterPolicy)// TODO: 
 // On the testing side - finding duplicates would be great.
 // Finding generated literals that have the same converted values.
 // TODO: Generating the range of literals
-void GenerateCharacterLiterals()
+void GenerateCharacterLiterals(TestingPolicy testingPolicy)
 //(std::size_t numberOfDigits, char largestDigit) // TODO: For loop handling - the amout of steps
 {
-	// TODO: Does this need to be a template for the buffer size to be computed at compile time?
-	// Allocate the buffer for generated literals
-	LiteralBuffer buffer;
-
 	// TODO: Hardcode
 	std::size_t digitLimit = 5; // 7 can be calculated on Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz 0m43.029s, 8 causes problems
 
-	// HERE :)
-	LiteralBuffer nTuple = CharacterSet(digitLimit, LetterPolicy::UPPER_CASE);
-	//char* nTuple = "01234";
-
-	// TODO: Zero will be zero, so no need to generate empty set
-	for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
+	if (testingPolicy == TestingPolicy::ALL_TEST)
 	{
-		// TODO: Third argument could be calculated from nTuple c-string
-		VariationsWithRepetitions(nTuple.GetBuffer(), digitRange, digitLimit, buffer);
+		// TODO: Does this need to be a template for the buffer size to be computed at compile time?
+		// Allocate the buffer for generated literals
+		LiteralBuffer buffer;
+		// HERE :)
+		LiteralBuffer nTuple = CharacterSet(digitLimit, LetterPolicy::UPPER_CASE);
+		//char* nTuple = "01234";
+
+		// TODO: Zero will be zero, so no need to generate empty set
+		for (std::size_t digitRange = 1; digitRange < digitLimit; digitRange++)
+		{
+			// TODO: Third argument could be calculated from nTuple c-string
+			VariationsWithRepetitions(nTuple.GetBuffer(), digitRange, digitLimit, buffer);
+		}
+	}
+	else // (testingPolicy == TestingPolicy::RANDOM_TEST)
+	{
+		// Arbitrary number of random literals to test
+		std::size_t numOfTestedLiterals = 10000;
+
+		for (std::size_t testNumber = 0; testNumber < numOfTestedLiterals; testNumber++)
+		{
+			// Need to cout it
+			GenerateRandomLiteral(digitLimit, digitLimit, digitLimit);
+		}
 	}
 }
 
@@ -208,24 +228,32 @@ void GenerateNTuple(char* nTupleSet, std::size_t k, std::size_t n, LiteralBuffer
 //}
 // Generates random literal of specified base
 // TODO: maxNumOfDigits versus random feeded numOfDigits?
-void GenerateRandomLiteral(std::size_t maxNumOfDigits, std::size_t base)
+std::string GenerateRandomLiteral(std::size_t literalLength, std::size_t base, std::size_t maxPossibleDigit)
 {
 	// Construct the suffix for the literal
-	std::string baseSuffix = "_b" + std::to_string(base);
+	std::string baseSuffix = "_b" + std::to_string(base); //Parametrize from "main" or global (probably bad)
 	std::random_device randomDevice; // Will be used to obtain a seed for the random number engine
 	std::mt19937 generator(randomDevice()); //Standard mersenne_twister_engine seeded with randomDevice()
 
-	std::uniform_int_distribution<> characterSetDist(0, base);
-	std::uniform_int_distribution<> literalInsertionDist(0, base - 1);
+	std::uniform_int_distribution<> characterSetDist(0, maxPossibleDigit);
+	std::uniform_int_distribution<> literalInsertionDist(0, maxPossibleDigit - 1);
 
-	// Get a random character set for given base - probably is not even needed
+	// Get a character set for given random base - this would make the solution biased towards
+	// smaller number - the random base < maxPossibleDigit
 	LiteralBuffer characterSet = CharacterSet(characterSetDist(generator), LetterPolicy::UPPER_CASE);
 	LiteralBuffer literal;
 
-	for (std::size_t digit = 0; digit < maxNumOfDigits; digit++)
+	for (std::size_t digit = 0; digit < literalLength; digit++)
 	{
+		// Inserts a random character from character set using literalInsertionDist
+		// as an index to characterSet buffer
 		literal.Insert((characterSet.GetBuffer())[literalInsertionDist(generator)]);
 	}
+
+	// TODO: Implement conversion between LiteralBuffer and std::string
+	std::string randomLiteral = std::string(literal.GetBuffer()) + baseSuffix;
+
+	return randomLiteral;
 
 	// Generate a random integer up to the base value
 	// Generate one single random literal
@@ -237,8 +265,15 @@ void GenerateRandomLiteral(std::size_t maxNumOfDigits, std::size_t base)
 
 	// Maximal number of digit is the number of bits that std::size_t is represented by
 	// No numeral system could
-	std::size_t maximalNumberOfDigits = BufferSize() - 1;
+	//std::size_t maximalNumberOfDigits = BufferSize() - 1;
 }
+
+
+// Random size and base?
+//void GenerateRandomLiteral(std::size_t literalLenght, std::size_t base)
+//{
+//
+//}
 
 
 int main(int argc, char* argv[])
@@ -250,7 +285,7 @@ int main(int argc, char* argv[])
 //	char literalBuffer[10];
 //	memset(literalBuffer, '\0', sizeof(literalBuffer));
 //	GenerateNTuple("AB", 3, 2, literalBuffer);
-	GenerateCharacterLiterals();
+	GenerateCharacterLiterals(TestingPolicy::ALL_TEST);
 
 	return 0;
 }
