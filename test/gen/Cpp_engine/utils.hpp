@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
 #include <climits>
 
@@ -34,4 +34,4 @@ std::size_t BufferSize()
 }
 
 
-#endif // #ifndef UTILS_H
+#endif // #ifndef UTILS_HPP

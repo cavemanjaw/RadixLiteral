@@ -1,4 +1,4 @@
-#include "converter.h"
+#include "converter.hpp"
 
 // TODO: Temporary to get pow()
 #include <cmath>

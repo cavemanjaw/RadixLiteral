@@ -1,5 +1,5 @@
-#ifndef CONVERTER_H
-#define CONVERTER_H
+#ifndef CONVERTER_HPP
+#define CONVERTER_HPP
 
 #include <cstddef>
 
@@ -14,4 +14,4 @@
 // to std::size_t typed decimal number (the return value)
 std::size_t converter(const char* arg, std::size_t base);
 
-#endif // #ifndef CONVERTER_H
+#endif // #ifndef CONVERTER_HPP

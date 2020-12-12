@@ -1,7 +1,7 @@
-#ifndef LITERAL_BUFFER_H
-#define LITERAL_BUFFER_H
+#ifndef LITERAL_BUFFER_HPP
+#define LITERAL_BUFFER_HPP
 
-#include "utils.h"
+#include "utils.hpp"
 #include <cstring>
 #include <string>
 
@@ -67,4 +67,4 @@ private:
 };
 
 
-#endif // #ifndef LITERAL_BUFFER_H
+#endif // #ifndef LITERAL_BUFFER_HPP
