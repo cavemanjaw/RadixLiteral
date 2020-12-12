@@ -74,6 +74,9 @@ namespace RadixLiteral
 //template<typename T>
 //using EnableIf = typename std::enable_if<T::value, enabler_t>::type;
 
+#define CONCATENATE_internal(x,y) x##y
+#define CONCATENATE(x,y) CONCATENATE_internal(x,y)
+
 // TODO: OPERATOR_LITERAL() that wraps OPERATOR_LITERAL10(15); and OPERATOR_LITERAL(15);
 // TODO: Then try to unify that solution into one macro
 
