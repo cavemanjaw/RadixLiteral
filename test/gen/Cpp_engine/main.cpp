@@ -112,13 +112,17 @@ void GenerateCharacterLiterals(TestingPolicy testingPolicy)
 	else // (testingPolicy == TestingPolicy::RANDOM_TEST)
 	{
 		// Arbitrary number of random literals to test
-		std::size_t numOfTestedLiterals = 10000;
+		std::size_t numOfTestedLiterals = 20000;
+		std::size_t maxBase = 18;
+
+		std::random_device randomDevice; // Will be used to obtain a seed for the random number engine
+		std::mt19937 generator(randomDevice()); //Standard mersenne_twister_engine seeded with randomDevice()
+		std::uniform_int_distribution<> baseDist(2, maxBase);
 
 		for (std::size_t testNumber = 0; testNumber < numOfTestedLiterals; testNumber++)
 		{
-			// Need to cout it
-			GenerateRandomLiteral(digitLimit, digitLimit, digitLimit);
-			PrintLiteralStaticAssert(GenerateRandomLiteral(digitLimit, digitLimit, digitLimit), digitLimit);
+			PrintLiteralStaticAssert(
+					GenerateRandomLiteral(digitLimit, baseDist(generator), digitLimit), baseDist(generator));
 		}
 	}
 }
@@ -176,18 +180,18 @@ std::string GenerateRandomLiteral(std::size_t literalLength, std::size_t base, s
 	std::random_device randomDevice; // Will be used to obtain a seed for the random number engine
 	std::mt19937 generator(randomDevice()); //Standard mersenne_twister_engine seeded with randomDevice()
 
-	std::uniform_int_distribution<> characterSetDist(0, maxPossibleDigit);
+	//std::uniform_int_distribution<> characterSetDist(0, maxPossibleDigit);
 	std::uniform_int_distribution<> literalInsertionDist(0, maxPossibleDigit - 1);
 
 	// Get a character set for given random base - this would make the solution biased towards
-	// smaller number - the random base < maxPossibleDigit
-	LiteralBuffer characterSet = CharacterSet(characterSetDist(generator), LetterPolicy::UPPER_CASE);
+	// smaller number - the random base < maxPossibleDigit //TODO: Base is chosed randmoly, and then other
+	LiteralBuffer characterSet = CharacterSet(maxPossibleDigit, LetterPolicy::UPPER_CASE);
 	LiteralBuffer literal;
 
 	for (std::size_t digit = 0; digit < literalLength; digit++)
 	{
 		// Inserts a random character from character set using literalInsertionDist
-		// as an index to characterSet buffer
+		// as an index to characterSet buffer //TODO: Is inserting in random place!!
 		literal.Insert((characterSet.GetBuffer())[literalInsertionDist(generator)]);
 	}
 
@@ -226,8 +230,8 @@ int main(int argc, char* argv[])
 //	char literalBuffer[10];
 //	memset(literalBuffer, '\0', sizeof(literalBuffer));
 //	GenerateNTuple("AB", 3, 2, literalBuffer);
-	GenerateCharacterLiterals(TestingPolicy::ALL_TEST);
-	//GenerateCharacterLiterals(TestingPolicy::RANDOM_TEST);
+	//GenerateCharacterLiterals(TestingPolicy::ALL_TEST);
+	GenerateCharacterLiterals(TestingPolicy::RANDOM_TEST);
 
 	return 0;
 }
