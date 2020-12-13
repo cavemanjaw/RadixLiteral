@@ -29,7 +29,7 @@ char MapSingleDigit(std::size_t value, std::size_t base, LetterPolicy letterPoli
 
 // TODO: Convert one digit in separate function?
 // TODO: Need to add policy - LetterPolicy letterPolicy
-LiteralBuffer inverted_converter(std::size_t arg, std::size_t base)
+LiteralBuffer inverted_converter(std::size_t arg, std::size_t base, LetterPolicy letterPolicy)
 {
 	// The builded base-valued base literal
 	LiteralBuffer convertedLiteral;
@@ -47,7 +47,7 @@ LiteralBuffer inverted_converter(std::size_t arg, std::size_t base)
 		decimalValue /= base;
 
 		// Run the moduloResult through mapping converter
-		convertedCharModuloResult = MapSingleDigit(decimalModuloResult, base, LetterPolicy::LOWER_CASE);
+		convertedCharModuloResult = MapSingleDigit(decimalModuloResult, base, letterPolicy);
 
 		convertedLiteral.Insert(convertedCharModuloResult);
 	}
@@ -56,7 +56,7 @@ LiteralBuffer inverted_converter(std::size_t arg, std::size_t base)
 	// the convertedLiteral
 	decimalModuloResult = decimalValue % base;
 	// Run the moduloResult through mapping converter
-	convertedCharModuloResult = MapSingleDigit(decimalModuloResult, base, LetterPolicy::LOWER_CASE);
+	convertedCharModuloResult = MapSingleDigit(decimalModuloResult, base, letterPolicy);
 
 	convertedLiteral.Insert(convertedCharModuloResult);
 

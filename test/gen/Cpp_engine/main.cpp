@@ -1,10 +1,12 @@
 #include "converter.hpp"
 #include "LiteralBuffer.hpp"
 #include "utils.hpp"
+#include "inverted_converter.hpp"
 
 #include <iostream>
 #include <cstddef>
 #include <climits>
+#include <limits>
 #include <cstring>
 #include <string>
 #include <string.h>
@@ -40,7 +42,11 @@ void PrintLiteralStaticAssert(std::string literalString, std::size_t base)
 }
 
 //char* returning the literal for a given base numeral system that can be represented in size_t type
-char* MaximalRepresentableLiteral();
+LiteralBuffer MaximalRepresentableLiteral(std::size_t base, LetterPolicy letterPolicy)
+{
+	std::size_t maxValue = std::numeric_limits<size_t>::max();
+	return inverted_converter(maxValue, base, letterPolicy);
+}
 
 // TODO: Move to C_engine implementation
 //char* CharacterSet(std::size_t base);
