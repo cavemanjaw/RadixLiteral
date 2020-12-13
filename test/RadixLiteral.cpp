@@ -42,6 +42,9 @@ NUMERAL_SYSTEM(20);
 // TODO: Requires NUMERAL_SYSTEM(x) to be defined, so it is here, below NUMERAL_SYSTEM definitions
 #include "compile_time_tests.h"
 
+// TODO: Automatically generated test inclusion
+#include "gen/test_gen.h"
+
 // TODO: Stress and check the boundary conditions NUMERAL_SYSTEM(INT_MAX); and so on...
 
 constexpr bool testBinary()
