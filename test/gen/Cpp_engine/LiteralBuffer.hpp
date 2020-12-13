@@ -18,8 +18,15 @@ public:
 		std::memset(buffer, '\0', sizeof(buffer));
 	}
 
+	LiteralBuffer(std::string string)
+		: size{string.size()}
+	{
+		string.copy(buffer, string.size(), 0);
+	}
+
 	LiteralBuffer(const LiteralBuffer& rhs) = default;
 	LiteralBuffer& operator=(const LiteralBuffer& rhs) = default;
+
 
 	std::size_t Length()
 	{
@@ -45,6 +52,23 @@ public:
 	{
 		buffer[position] = '\0';
 		size--;
+	}
+
+	void Reverse()
+	{
+		char* begin_p = buffer;
+		char* end_p = begin_p + size;
+		char tmp;
+
+		while (begin_p < end_p)
+		{
+			tmp = *begin_p;
+			*begin_p = *end_p;
+			*end_p = tmp;
+
+			begin_p++;
+			end_p++;
+		}
 	}
 
 	// TODO: Theoretically should be const to not leak the resources from LiteralBuffer objects,
