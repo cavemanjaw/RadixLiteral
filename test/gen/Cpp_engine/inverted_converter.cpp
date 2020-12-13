@@ -3,11 +3,6 @@
 
 #include <cmath>
 
-// Based on ASCII table
-#define CHAR_TO_INT_NUMBER_OFFSET 48
-#define CHAR_TO_INT_LOWER_CASE_OFFSET 55
-#define CHAR_TO_INT_UPPER_CASE_OFFSET 87
-
 char MapSingleDigit(std::size_t value, std::size_t base, LetterPolicy letterPolicy)
 {
 	char baseCharacter = '0';
@@ -70,7 +65,3 @@ LiteralBuffer inverted_converter(std::size_t arg, std::size_t base)
 	// Return the calculated number in base-std::size_t argument base numeral system
 	return convertedLiteral;
 }
-
-
-
-
