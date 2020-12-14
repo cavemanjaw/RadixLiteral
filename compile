@@ -1,19 +1,8 @@
 #!/bin/bash
 # compile
 
-# the example is:
-# sed 's/\( [0-9]\) .*/\1/'
-# outname=$(sed 's/^\.$/^$/' $1) ??
-
-# does not work for some reason - which regex is used for that? any fault in the syntax or logic?
-# outname=${$1/^\.$/^$}
-# P_REP=${P/./_}
 # TODO: Pass the compiler flags
-
-# this is bad
-# echo "$1" | sed -e 's/^.*\..*$/^.*$/g'
-
-#TODO: Custom flag to bind one of the engines - C++ based, C based or Python based
+# TODO: Custom flag to bind one of the engines - C++ based, C based or Python based
 
 if [ -n "$1" ] && [ $1 != "-g" ] && [ $1 != "-gen" ]; then
    outname=$(echo "$1" | sed -E 's/^(.*)\..*/\1/g')
